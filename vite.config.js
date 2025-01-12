@@ -4,6 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/pwa-Explorer-onboarding/',
   server: {
     port: 3000,
     strictPort: true,
