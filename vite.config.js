@@ -33,7 +33,8 @@ export default defineConfig({
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/',
+        start_url: '/pwa-Explorer-onboarding/',
+        scope: '/pwa-Explorer-onboarding/',
         categories: ['productivity', 'utilities'],
         icons: [
           {
