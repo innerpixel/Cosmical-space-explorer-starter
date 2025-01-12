@@ -6,7 +6,7 @@
   "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait",
-  "scope": "/",
+  "scope": "/pwa-Explorer-onboarding/",
   "start_url": "/",
   "icons": [
     {
