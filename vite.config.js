@@ -126,12 +126,12 @@ export default defineConfig({
         shortcuts: [
           {
             name: 'Home',
-            url: '/',
+            url: '/pwa-Explorer-onboarding/',
             icons: [{ src: 'icons/dashboard-96x96.png', sizes: '96x96', type: 'image/png' }]
           },
           {
             name: 'Profile',
-            url: '/profile',
+            url: '/pwa-Explorer-onboarding/profile',
             icons: [{ src: 'icons/profile-96x96.png', sizes: '96x96', type: 'image/png' }]
           }
         ]
