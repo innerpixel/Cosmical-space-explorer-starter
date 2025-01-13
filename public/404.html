@@ -6,7 +6,7 @@
     <script>
       // Redirect all 404s to index.html
       const segments = window.location.pathname.split('/');
-      const repo = 'pwa-Explorer-onboarding';
+      const repo = 'Cosmical-space-explorer-starter';
       const index = segments.indexOf(repo);
       const path = segments.slice(index + 1).join('/');
       window.location.replace(`/${repo}/#/${path}`);

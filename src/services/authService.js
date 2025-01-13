@@ -3,7 +3,7 @@ class AuthService {
     this.users = null;
     this.currentUser = null;
     // Get base URL from import.meta.env or fallback to repository name for GitHub Pages
-    this.baseUrl = import.meta.env.BASE_URL || '/pwa-Explorer-onboarding';
+    this.baseUrl = import.meta.env.BASE_URL || '/Cosmical-space-explorer-starter';
   }
 
   async initialize() {
