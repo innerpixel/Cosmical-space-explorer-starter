@@ -4,17 +4,14 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/pwa-Explorer-onboarding/',
+  base: process.env.NODE_ENV === 'production' ? '/pwa-Explorer-onboarding/' : '/',
   server: {
     port: 3000,
     strictPort: true,
-    host: '0.0.0.0', // Listen on all network interfaces
-    https: false, // Set to true if you need HTTPS
-    cors: true, // Enable CORS
-    hmr: {
-      host: '192.168.100.15', // Your local IP address
-      port: 3000
-    }
+    host: true, // Listen on all network interfaces
+    https: false,
+    cors: true,
+    open: true // Auto-open browser
   },
   build: {
     outDir: 'dist',
@@ -26,15 +23,15 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Vue PWA App',
-        short_name: 'Vue PWA',
-        description: 'A modern Progressive Web App built with Vue 3 and Vite',
-        theme_color: '#ffffff',
+        name: 'Cosmical Space Explorer',
+        short_name: 'Space Explorer',
+        description: 'A modern Progressive Web App for space exploration',
+        theme_color: '#4F46E5',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/pwa-Explorer-onboarding/',
-        scope: '/pwa-Explorer-onboarding/',
+        start_url: '/',
+        scope: '/',
         categories: ['productivity', 'utilities'],
         icons: [
           {
@@ -126,12 +123,12 @@ export default defineConfig({
         shortcuts: [
           {
             name: 'Home',
-            url: '/pwa-Explorer-onboarding/',
+            url: '/',
             icons: [{ src: 'icons/dashboard-96x96.png', sizes: '96x96', type: 'image/png' }]
           },
           {
             name: 'Profile',
-            url: '/pwa-Explorer-onboarding/profile',
+            url: '/profile',
             icons: [{ src: 'icons/profile-96x96.png', sizes: '96x96', type: 'image/png' }]
           }
         ]

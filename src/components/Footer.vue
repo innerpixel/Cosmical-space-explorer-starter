@@ -1,7 +1,7 @@
 <template>
-  <footer class="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
+  <footer class="fixed bottom-0 left-0 right-0 bg-white shadow-lg border-t border-gray-200 z-50">
+    <div class="h-full px-0 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16 mx-2 sm:mx-0">
         <!-- Left section -->
         <div class="flex items-center space-x-4">
           <router-link 
@@ -11,17 +11,16 @@
             Home
           </router-link>
           <router-link 
-            v-if="isAdmin"
-            to="/admin" 
+            to="/docs" 
             class="text-gray-600 hover:text-emerald-600 transition-colors"
           >
-            Admin
+            Documentation
           </router-link>
         </div>
 
         <!-- Center section -->
         <div class="flex items-center">
-          <span class="text-sm text-gray-500">© 2025 CSMCL SPACE. All rights reserved.</span>
+          <span class="text-sm text-gray-500"> 2025 CSMCL SPACE. All rights reserved.</span>
         </div>
 
         <!-- Right section -->
@@ -49,49 +48,42 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useUserStore } from '../stores/userStore'
+import { ref, onMounted } from 'vue'
 
-const userStore = useUserStore()
-const isAdmin = computed(() => userStore.isAdmin)
-
-// PWA Installation
-const deferredPrompt = ref(null)
 const showInstallButton = ref(false)
-const isPWA = ref(window.matchMedia('(display-mode: standalone)').matches)
+const isPWA = ref(false)
+let deferredPrompt = null
 
-// Listen for beforeinstallprompt event
+// Handle PWA installation
 window.addEventListener('beforeinstallprompt', (e) => {
-  deferredPrompt.value = e
+  e.preventDefault()
+  deferredPrompt = e
   showInstallButton.value = true
 })
 
-const installPWA = async () => {
-  if (!deferredPrompt.value) return
-
-  try {
-    const result = await deferredPrompt.value.prompt()
-    const choiceResult = await deferredPrompt.value.userChoice
-    
-    if (choiceResult.outcome === 'accepted') {
-      showInstallButton.value = false
-      isPWA.value = true
-    }
-  } catch (err) {
-    console.error('Error installing PWA:', err)
-  } finally {
-    deferredPrompt.value = null
+async function installPWA() {
+  if (!deferredPrompt) return
+  
+  deferredPrompt.prompt()
+  const { outcome } = await deferredPrompt.userChoice
+  
+  if (outcome === 'accepted') {
+    console.log('PWA installed')
+    showInstallButton.value = false
   }
+  
+  deferredPrompt = null
 }
 
 // Check if running as PWA
 window.addEventListener('appinstalled', () => {
   showInstallButton.value = false
   isPWA.value = true
-  deferredPrompt.value = null
 })
 
-window.matchMedia('(display-mode: standalone)').addEventListener('change', (e) => {
-  isPWA.value = e.matches
+onMounted(() => {
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    isPWA.value = true
+  }
 })
 </script>

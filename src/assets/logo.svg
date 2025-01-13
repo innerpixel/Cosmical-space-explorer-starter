@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @keyframes planetPulse {
+      0% { r: 8; fill: #6366F1; }
+      25% { fill: #818CF8; }
+      50% { r: 9; fill: #A78BFA; }
+      75% { fill: #60A5FA; }
+      100% { r: 8; fill: #6366F1; }
+    }
+    @keyframes ringRotate1 {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes ringRotate2 {
+      from { transform: rotate(360deg); }
+      to { transform: rotate(0deg); }
+    }
+    @keyframes energyPulse {
+      0% { stroke-width: 0.5; opacity: 0.3; stroke: #4F46E5; }
+      33% { stroke: #818CF8; }
+      50% { stroke-width: 2; opacity: 0.8; stroke: #A78BFA; }
+      66% { stroke: #60A5FA; }
+      100% { stroke-width: 0.5; opacity: 0.3; stroke: #4F46E5; }
+    }
+    @keyframes twinkle {
+      0% { transform: scale(1); opacity: 1; fill: white; }
+      50% { transform: scale(1.5); opacity: 0.7; fill: #A78BFA; }
+      100% { transform: scale(1); opacity: 1; fill: white; }
+    }
+    @keyframes glowPulse {
+      0% { opacity: 0.1; }
+      50% { opacity: 0.3; }
+      100% { opacity: 0.1; }
+    }
+    .planet { animation: planetPulse 4s ease-in-out infinite; }
+    .ring1 { 
+      transform-origin: center;
+      animation: ringRotate1 12s linear infinite;
+    }
+    .ring2 { 
+      transform-origin: center;
+      animation: ringRotate2 8s linear infinite;
+    }
+    .energy-ring {
+      animation: energyPulse 3s ease-in-out infinite;
+    }
+    .glow {
+      animation: glowPulse 4s ease-in-out infinite;
+    }
+    .star { animation: twinkle 2s ease-in-out infinite; }
+    .star2 { animation: twinkle 2s ease-in-out infinite 0.6s; }
+    .star3 { animation: twinkle 2s ease-in-out infinite 1.2s; }
+  </style>
+
+  <!-- Background Circle -->
+  <circle cx="24" cy="24" r="23" fill="#1a1a2e" stroke="#4F46E5" stroke-width="2"/>
+  
+  <!-- Planet Glow -->
+  <circle class="glow" cx="24" cy="24" r="12" fill="url(#planetGlow)" />
+  
+  <!-- Energy Rings -->
+  <circle class="energy-ring" cx="24" cy="24" r="14" stroke-width="1" fill="none"/>
+  <circle class="energy-ring" cx="24" cy="24" r="11" stroke-width="1" fill="none" style="animation-delay: -1.5s"/>
+  
+  <!-- Rotating Rings -->
+  <g class="ring1">
+    <ellipse cx="24" cy="24" rx="16" ry="4" stroke="#4F46E5" stroke-width="1" fill="none" transform="rotate(30)"/>
+  </g>
+  <g class="ring2">
+    <ellipse cx="24" cy="24" rx="13" ry="3" stroke="#818CF8" stroke-width="1" fill="none" transform="rotate(-15)"/>
+  </g>
+  
+  <!-- Planet -->
+  <defs>
+    <radialGradient id="planetGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#A78BFA" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#4F46E5" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle class="planet" cx="24" cy="24" r="8" fill="#6366F1"/>
+  
+  <!-- Stars -->
+  <circle class="star" cx="14" cy="14" r="1.2" fill="white"/>
+  <circle class="star2" cx="34" cy="34" r="1.2" fill="white"/>
+  <circle class="star3" cx="30" cy="12" r="1.2" fill="white"/>
+  <circle class="star" cx="18" cy="36" r="1.2" fill="white"/>
+  <circle class="star2" cx="10" cy="24" r="1.2" fill="white"/>
+</svg>
