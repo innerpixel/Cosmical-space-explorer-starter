@@ -6,11 +6,12 @@
     <!-- Main Content (with padding for top bar) -->
     <main class="w-full px-4 py-4 sm:py-6 md:py-8 mt-16">
       <div class="max-w-7xl mx-auto">
+
         <!-- Welcome Card -->
         <div class="bg-white rounded-xl shadow-lg p-6 mb-8 border border-emerald-100
                     transform hover:scale-[1.01] transition-all duration-300">
-          <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-2">Welcome to Vue PWA</h2>
-          <p class="text-lg text-gray-600">A modern Progressive Web App template built with Vue 3 and Vite</p>
+          <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-2">CSMCL SPACE - Welcome</h2>
+          <p class="text-lg text-gray-600">STARTER TEMPLATE FOR PWA - A modern Progressive Web App template built with Vue 3 and Vite</p>
         </div>
         
         <!-- Feature Cards -->
@@ -58,7 +59,9 @@
           </div>
         </div>
       </div>
-
+      <div class="mt-8" >
+                <NotificationDemo />
+      </div>
       <!-- Update Notification -->
       <div v-if="updateAvailable" 
            class="fixed bottom-4 right-4 z-50">
@@ -82,6 +85,8 @@
 import { ref, onMounted } from 'vue'
 import { registerSW } from 'virtual:pwa-register'
 import TopBar from './components/TopBar.vue'
+import NotificationDemo from './components/NotificationDemo.vue'
+import { initializePushNotifications } from './services/notifications'
 
 const updateAvailable = ref(false)
 let updateSW = null
@@ -98,7 +103,8 @@ const toggleFaq = (key) => {
   openFaqs.value[key] = !openFaqs.value[key]
 }
 
-onMounted(() => {
+onMounted(async () => {
+  // Register service worker
   const { updateServiceWorker } = registerSW({
     onNeedRefresh() {
       updateAvailable.value = true
@@ -108,13 +114,20 @@ onMounted(() => {
     },
   })
   updateSW = updateServiceWorker
+
+  // Initialize push notifications
+  try {
+    const subscription = await initializePushNotifications()
+    if (subscription) {
+      console.log('Push notifications initialized successfully')
+    }
+  } catch (error) {
+    console.error('Failed to initialize push notifications:', error)
+  }
 })
 
-const updateServiceWorker = async () => {
-  if (updateSW) {
-    await updateSW()
-    window.location.reload()
-  }
+const updateServiceWorker = () => {
+  updateSW?.()
 }
 </script>
 
