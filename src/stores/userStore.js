@@ -16,21 +16,60 @@ const PROFILE_PRIVILEGES = {
   member: ['view_content']
 }
 
+// Mock users for development
+const MOCK_USERS = {
+  admin: {
+    username: 'admin',
+    password: 'admin',
+    id: 1,
+    email: 'admin@example.com',
+    profile: {
+      id: 1,
+      type: PROFILE_TYPES.ADMIN
+    }
+  },
+  developer: {
+    username: 'developer',
+    password: 'dev123',
+    id: 2,
+    email: 'developer@example.com',
+    profile: {
+      id: 2,
+      type: PROFILE_TYPES.DEVELOPER
+    }
+  },
+  user: {
+    username: 'user',
+    password: 'user123',
+    id: 3,
+    email: 'user@example.com',
+    profile: {
+      id: 3,
+      type: PROFILE_TYPES.MEMBER
+    }
+  }
+}
+
 // Mock API function - replace with real API calls
 const mockAuthApi = {
   async login(credentials) {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500))
     
-    // For development, only accept specific credentials
-    if (credentials.username === 'admin' && credentials.password === 'admin') {
+    // Find matching user
+    const user = Object.values(MOCK_USERS).find(
+      u => u.username === credentials.username && u.password === credentials.password
+    )
+    
+    if (user) {
       return {
         user: {
-          id: 1,
-          username: 'admin',
-          email: 'admin@example.com'
+          id: user.id,
+          username: user.username,
+          email: user.email
         },
-        token: 'mock-jwt-token'
+        token: `mock-jwt-token-${user.id}`,
+        profile: user.profile
       }
     }
     
@@ -69,15 +108,9 @@ export const useUserStore = defineStore('user', () => {
       user.value = response.user
       token.value = response.token
       
-      // Set admin profile if admin user
-      if (credentials.username === 'admin') {
-        profiles.value = [{
-          id: 1,
-          type: PROFILE_TYPES.ADMIN,
-          userId: 1
-        }]
-        currentProfile.value = profiles.value[0]
-      }
+      // Set initial profile
+      profiles.value = [response.profile]
+      currentProfile.value = response.profile
       
       isAuthenticated.value = true
       error.value = ''

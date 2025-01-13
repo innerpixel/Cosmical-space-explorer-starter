@@ -6,6 +6,9 @@
         <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Sign in to your account
         </h2>
+        <p class="mt-2 text-center text-sm text-gray-600">
+          Test credentials available below
+        </p>
       </div>
       <form class="mt-8 space-y-6" @submit.prevent="handleSubmit">
         <div class="rounded-md shadow-sm -space-y-px">
@@ -50,6 +53,16 @@
           </button>
         </div>
       </form>
+
+      <!-- Test Credentials -->
+      <div class="mt-4 p-4 bg-gray-100 rounded-md">
+        <h3 class="text-sm font-medium text-gray-900">Test Credentials:</h3>
+        <div class="mt-2 space-y-2 text-xs text-gray-600">
+          <p><strong>Admin:</strong> username: admin / password: admin</p>
+          <p><strong>Developer:</strong> username: developer / password: dev123</p>
+          <p><strong>User:</strong> username: user / password: user123</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
