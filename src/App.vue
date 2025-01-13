@@ -59,7 +59,7 @@
           </div>
         </div>
       </div>
-      <div class="mt-8" >
+      <div class="mt-8 flex justify-center" >
                 <NotificationDemo />
       </div>
       <!-- Update Notification -->
