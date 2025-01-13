@@ -1,8 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { useUserStore } from '../stores/userStore'
 
+const base = '/pwa-Explorer-onboarding/'
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL || '/pwa-Explorer-onboarding/'),
+  history: createWebHashHistory(base),
   routes: [
     {
       path: '/',

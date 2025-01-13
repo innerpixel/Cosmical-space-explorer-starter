@@ -8,10 +8,10 @@ export default defineConfig({
   server: {
     port: 3000,
     strictPort: true,
-    host: true, // Listen on all network interfaces
+    host: true, 
     https: false,
     cors: true,
-    open: true // Auto-open browser
+    open: true 
   },
   build: {
     outDir: 'dist',
@@ -138,14 +138,15 @@ export default defineConfig({
         sourcemap: true,
         inlineWorkboxRuntime: true,
         globPatterns: [
-          '**/*.{js,css,html}'
+          '**/*.{js,css,html,ico,png,svg,woff2}'
         ],
         globIgnores: [
           '**/node_modules/**/*',
           'sw.js',
           'workbox-*.js'
         ],
-        navigateFallback: 'index.html',
+        navigateFallback: '/pwa-Explorer-onboarding/index.html',
+        navigateFallbackAllowlist: [/^\/pwa-Explorer-onboarding\//],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -154,7 +155,21 @@ export default defineConfig({
               cacheName: 'google-fonts-cache',
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+                maxAgeSeconds: 60 * 60 * 24 * 365 
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'gstatic-fonts-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 * 365
               },
               cacheableResponse: {
                 statuses: [0, 200]
