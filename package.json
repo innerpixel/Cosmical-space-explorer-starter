@@ -18,7 +18,9 @@
     "screenshots": "node scripts/generate-screenshots.js"
   },
   "dependencies": {
-    "vue": "^3.3.11"
+    "pinia": "^2.3.0",
+    "vue": "^3.3.11",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@testing-library/vue": "^8.1.0",

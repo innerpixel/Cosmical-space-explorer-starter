@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-4">
-    <div class="flex gap-4">
+    <div class="flex flex-col items-center gap-2  md:flex-row md:justify-center md:gap-4">
       <button
         @click="sendBasicNotification"
         class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"

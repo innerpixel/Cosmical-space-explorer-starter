@@ -4547,7 +4547,7 @@ clientsClaim();
  */
 precacheAndRoute([{
   "url": "index.html",
-  "revision": "0.71a9k4pim5o"
+  "revision": "0.5isshgi15e"
 }], {});
 cleanupOutdatedCaches();
 registerRoute(new NavigationRoute(createHandlerBoundToURL("index.html"), {

@@ -3,81 +3,19 @@
     <!-- Top Bar -->
     <TopBar />
     
-    <!-- Main Content (with padding for top bar) -->
-    <main class="w-full px-4 py-4 sm:py-6 md:py-8 mt-16">
-      <div class="max-w-7xl mx-auto">
-
-        <!-- Welcome Card -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-8 border border-emerald-100
-                    transform hover:scale-[1.01] transition-all duration-300">
-          <h2 class="text-2xl sm:text-3xl font-bold text-emerald-800 mb-2">CSMCL SPACE - Welcome</h2>
-          <p class="text-lg text-gray-600">STARTER TEMPLATE FOR PWA - A modern Progressive Web App template built with Vue 3 and Vite</p>
-        </div>
-        
-        <!-- Feature Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Mobile First Card -->
-          <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow
-                      border-l-4 border-emerald-500">
-            <div class="flex items-center gap-4 mb-4">
-              <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <h3 class="text-lg font-semibold text-gray-800">Mobile First</h3>
-            </div>
-            <p class="text-gray-600">Optimized for all screen sizes with responsive design</p>
-          </div>
-
-          <!-- PWA Ready Card -->
-          <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow
-                      border-l-4 border-emerald-500">
-            <div class="flex items-center gap-4 mb-4">
-              <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-              </div>
-              <h3 class="text-lg font-semibold text-gray-800">PWA Ready</h3>
-            </div>
-            <p class="text-gray-600">Install as a native app with offline capabilities</p>
-          </div>
-
-          <!-- Offline Support Card -->
-          <div class="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow
-                      border-l-4 border-emerald-500">
-            <div class="flex items-center gap-4 mb-4">
-              <div class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 class="text-lg font-semibold text-gray-800">Offline Support</h3>
-            </div>
-            <p class="text-gray-600">Works without internet connection</p>
-          </div>
-        </div>
-      </div>
-      <div class="mt-8 flex justify-center" >
-                <NotificationDemo />
-      </div>
-      <!-- Update Notification -->
-      <div v-if="updateAvailable" 
-           class="fixed bottom-4 right-4 z-50">
-        <button 
-          @click="updateServiceWorker" 
-          class="bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-lg
-                 flex items-center gap-2 transform hover:scale-105 transition-all
-                 hover:bg-emerald-700 active:scale-95">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
-          </svg>
-          Update Available
-        </button>
+    <!-- Spacer div to prevent content from slipping under navbar -->
+    <div class="h-20"></div>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen">
+      <!-- Content wrapper with responsive padding -->
+      <div class="max-w-7xl mx-auto space-y-8">
+        <router-view></router-view>
       </div>
     </main>
-  
+
+    <!-- Footer -->
+    <Footer />
   </div>
 </template>
 
@@ -85,6 +23,7 @@
 import { ref, onMounted } from 'vue'
 import { registerSW } from 'virtual:pwa-register'
 import TopBar from './components/TopBar.vue'
+import Footer from './components/Footer.vue'
 import NotificationDemo from './components/NotificationDemo.vue'
 import { initializePushNotifications } from './services/notifications'
 
@@ -137,17 +76,61 @@ const updateServiceWorker = () => {
 @import 'tailwindcss/utilities';
 
 :root {
-  --emerald-50: #ecfdf5;
-  --emerald-100: #d1fae5;
-  --emerald-500: #10b981;
-  --emerald-600: #059669;
-  --emerald-700: #047857;
-  --emerald-800: #065f46;
+  --primary-50: #eef2ff;
+  --primary-100: #e0e7ff;
+  --primary-200: #c7d2fe;
+  --primary-300: #a5b4fc;
+  --primary-400: #818cf8;
+  --primary-500: #6366f1;
+  --primary-600: #4f46e5;
+  --primary-700: #4338ca;
+  --primary-800: #3730a3;
+  --primary-900: #312e81;
+  
+  --secondary-50: #f8fafc;
+  --secondary-100: #f1f5f9;
+  --secondary-200: #e2e8f0;
+  --secondary-300: #cbd5e1;
+  --secondary-400: #94a3b8;
+  --secondary-500: #64748b;
+  --secondary-600: #475569;
+  --secondary-700: #334155;
+  --secondary-800: #1e293b;
+  --secondary-900: #0f172a;
 }
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
                Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 
                sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  overflow-y: auto;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Responsive padding adjustments */
+@media (max-width: 640px) {
+  .container {
+    padding-top: 1rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .container {
+    padding-top: 2rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .container {
+    padding-top: 3rem;
+  }
 }
 </style>
