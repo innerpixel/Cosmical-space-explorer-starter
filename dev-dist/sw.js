@@ -4546,15 +4546,24 @@ clientsClaim();
  * See https://goo.gl/S9QRab
  */
 precacheAndRoute([{
-  "url": "index.html",
-  "revision": "0.annmb09ba1g"
+  "url": "/pwa-Explorer-onboarding/index.html",
+  "revision": "0.ri7l8bs08bg"
 }], {});
 cleanupOutdatedCaches();
-registerRoute(new NavigationRoute(createHandlerBoundToURL("index.html"), {
+registerRoute(new NavigationRoute(createHandlerBoundToURL("/pwa-Explorer-onboarding/index.html"), {
   allowlist: [/^\/$/]
 }));
 registerRoute(/^https:\/\/fonts\.googleapis\.com\/.*/i, new CacheFirst({
   "cacheName": "google-fonts-cache",
+  plugins: [new ExpirationPlugin({
+    maxEntries: 10,
+    maxAgeSeconds: 31536000
+  }), new CacheableResponsePlugin({
+    statuses: [0, 200]
+  })]
+}), 'GET');
+registerRoute(/^https:\/\/fonts\.gstatic\.com\/.*/i, new CacheFirst({
+  "cacheName": "gstatic-fonts-cache",
   plugins: [new ExpirationPlugin({
     maxEntries: 10,
     maxAgeSeconds: 31536000

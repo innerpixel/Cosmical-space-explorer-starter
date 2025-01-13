@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/pwa-Explorer-onboarding/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/Cosmical-space-explorer-starter/' : '/',
   server: {
     port: 3000,
     strictPort: true,
@@ -26,12 +26,12 @@ export default defineConfig({
         name: 'Cosmical Space Explorer',
         short_name: 'Space Explorer',
         description: 'A modern Progressive Web App for space exploration',
-        theme_color: '#4F46E5',
-        background_color: '#ffffff',
+        theme_color: '#0A0A0F',
+        background_color: '#0A0A0F',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/pwa-Explorer-onboarding/',
-        scope: '/pwa-Explorer-onboarding/',
+        start_url: '/Cosmical-space-explorer-starter/',
+        scope: '/Cosmical-space-explorer-starter/',
         categories: ['productivity', 'utilities'],
         icons: [
           {
@@ -145,8 +145,8 @@ export default defineConfig({
           'sw.js',
           'workbox-*.js'
         ],
-        navigateFallback: '/pwa-Explorer-onboarding/index.html',
-        navigateFallbackAllowlist: [/^\/pwa-Explorer-onboarding\//],
+        navigateFallback: '/Cosmical-space-explorer-starter/index.html',
+        navigateFallbackAllowlist: [/^\/Cosmical-space-explorer-starter\//],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,

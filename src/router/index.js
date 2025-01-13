@@ -1,9 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { useUserStore } from '../stores/userStore'
 
-const base = '/pwa-Explorer-onboarding/'
 const router = createRouter({
-  history: createWebHashHistory(base),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
@@ -31,6 +30,11 @@ const router = createRouter({
       name: 'AdminRequests',
       component: () => import('../views/AdminRequestsView.vue'),
       meta: { requiresAuth: true, requiresAdmin: true }
+    },
+    {
+      path: '/showcase',
+      name: 'ComponentShowcase',
+      component: () => import('../views/ComponentShowcase.vue')
     },
     {
       path: '/:pathMatch(.*)*',
