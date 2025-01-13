@@ -3,10 +3,10 @@
     <!-- Scan Lines Effect -->
     <div class="absolute inset-0 bg-scan-lines opacity-10 pointer-events-none"></div>
 
-    <div class="container mx-auto px-4 py-8">
+    <div class="w-full">
       <!-- Hero Section -->
-      <div class="relative max-w-4xl mx-auto mb-16">
-        <div class="scanner-container bg-space-darker rounded-lg border border-interface-border p-12 overflow-hidden">
+      <div class="relative w-full mb-16">
+        <div class="scanner-container bg-space-darker border-y border-interface-border p-12 overflow-hidden">
           <!-- Moving Border Light Effect -->
           <div class="light-border"></div>
           
@@ -36,7 +36,7 @@
       </div>
 
       <!-- Features Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-6 lg:px-8 mb-16">
         <div class="bg-space-darker p-6 rounded-lg border border-interface-border shadow-glow">
           <div class="text-interface-text-primary mb-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -1,50 +1,53 @@
 <template>
   <div class="min-h-screen bg-space-black pt-16">
-    <!-- Scan Lines Effect -->
-    <div class="absolute inset-0 bg-scan-lines opacity-10 pointer-events-none"></div>
-
-    <div class="container mx-auto px-4 py-8">
+    <div class="w-full">
       <!-- Documentation Header -->
-      <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-interface-text-primary animate-glow-pulse mb-4">
-          Mission Documentation
-        </h1>
-        <p class="text-xl text-interface-text-muted max-w-2xl mx-auto">
-          Essential guides and protocols for space exploration operations
-        </p>
+      <div class="relative w-full mb-8">
+        <div class="bg-space-darker border-y border-interface-border p-8">
+          <h1 class="text-3xl font-bold text-interface-text-primary mb-4">Documentation</h1>
+          <p class="text-interface-text-muted max-w-3xl">Your guide to exploring and utilizing the Cosmical Space Explorer platform.</p>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <!-- Navigation Sidebar -->
-        <div class="lg:col-span-1">
-          <div class="bg-space-darker rounded-lg border border-interface-border shadow-glow p-6 sticky top-24">
-            <h2 class="text-xl font-semibold text-interface-text-primary mb-4">Contents</h2>
-            <nav class="space-y-2">
-              <a 
+      <!-- Documentation Content -->
+      <div class="px-4 md:px-6 lg:px-8">
+        <!-- Scan Lines Effect -->
+        <div class="absolute inset-0 bg-scan-lines opacity-10 pointer-events-none"></div>
+
+        <div class="container mx-auto py-8">
+          <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Navigation Sidebar -->
+            <div class="lg:col-span-1">
+              <div class="bg-space-darker rounded-lg border border-interface-border shadow-glow p-6 sticky top-24">
+                <h2 class="text-xl font-semibold text-interface-text-primary mb-4">Contents</h2>
+                <nav class="space-y-2">
+                  <a 
+                    v-for="(section, index) in sections" 
+                    :key="index"
+                    :href="'#' + section.id"
+                    class="block text-interface-text-muted hover:text-interface-text-primary transition-colors duration-200"
+                  >
+                    {{ section.title }}
+                  </a>
+                </nav>
+              </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-8">
+              <section 
                 v-for="(section, index) in sections" 
                 :key="index"
-                :href="'#' + section.id"
-                class="block text-interface-text-muted hover:text-interface-text-primary transition-colors duration-200"
+                :id="section.id"
+                class="bg-space-darker rounded-lg border border-interface-border shadow-glow p-8"
               >
-                {{ section.title }}
-              </a>
-            </nav>
-          </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="lg:col-span-3 space-y-8">
-          <section 
-            v-for="(section, index) in sections" 
-            :key="index"
-            :id="section.id"
-            class="bg-space-darker rounded-lg border border-interface-border shadow-glow p-8"
-          >
-            <h2 class="text-2xl font-semibold text-interface-text-primary mb-6">{{ section.title }}</h2>
-            <div class="prose prose-invert max-w-none">
-              <div v-html="section.content"></div>
+                <h2 class="text-2xl font-semibold text-interface-text-primary mb-6">{{ section.title }}</h2>
+                <div class="prose prose-invert max-w-none">
+                  <div v-html="section.content"></div>
+                </div>
+              </section>
             </div>
-          </section>
+          </div>
         </div>
       </div>
     </div>
