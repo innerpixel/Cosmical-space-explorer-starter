@@ -5,7 +5,7 @@
         <!-- Logo/Title -->
         <router-link to="/" class="flex items-center space-x-3 group">
           <div class="transform transition-transform duration-500 group-hover:scale-110">
-            <img src="../assets/logo.svg" alt="CSMCL SPACE Logo - Interactive space exploration logo with mouse-following rocket" class="h-12 w-12" />
+            <img src="../assets/logo.svg" alt="CSMCL SPACE Logo" class="h-12 w-12" />
           </div>
           <span class="text-xl font-bold text-white group-hover:text-indigo-200 transition-colors duration-500">CSMCL SPACE</span>
         </router-link>
@@ -55,17 +55,17 @@
 
         <!-- User Actions -->
         <div class="hidden md:flex items-center space-x-4">
-          <button 
+          <router-link 
             v-if="!isAuthenticated"
-            @click="login"
+            to="/login"
             class="px-4 py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-400 rounded-lg transition-colors"
           >
             Sign In
-          </button>
+          </router-link>
           <div v-else class="flex items-center space-x-4">
-            <span class="text-white">{{ username }}</span>
+            <span class="text-white">{{ userDisplayName }}</span>
             <button 
-              @click="logout"
+              @click="handleLogout"
               class="px-4 py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-400 rounded-lg transition-colors"
             >
               Sign Out
@@ -115,19 +115,20 @@
         >
           Admin
         </router-link>
-        <div class="pt-2 border-t border-indigo-500">
-          <button 
+        <div class="py-2">
+          <router-link
             v-if="!isAuthenticated"
-            @click="login"
-            class="w-full px-4 py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-400 rounded-lg transition-colors"
+            to="/login"
+            class="block py-2 text-gray-100 hover:text-white hover:bg-indigo-500 rounded-lg px-3 transition-colors"
+            @click="isMenuOpen = false"
           >
             Sign In
-          </button>
-          <div v-else class="space-y-2">
-            <span class="block text-white px-3">{{ username }}</span>
+          </router-link>
+          <div v-else class="flex justify-between items-center px-3">
+            <span class="text-white">{{ userDisplayName }}</span>
             <button 
-              @click="logout"
-              class="w-full px-4 py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-400 rounded-lg transition-colors"
+              @click="handleLogout"
+              class="px-4 py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-400 rounded-lg transition-colors"
             >
               Sign Out
             </button>
@@ -144,23 +145,21 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useUserStore } from '../stores/userStore'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 const userStore = useUserStore()
 const isMenuOpen = ref(false)
 
 const isAuthenticated = computed(() => userStore.isAuthenticated)
 const isAdmin = computed(() => userStore.isAdmin)
-const username = computed(() => userStore.username)
+const userDisplayName = computed(() => userStore.userDisplayName)
 const currentRoute = computed(() => route?.path || '/')
 
-const login = () => {
-  userStore.login()
-}
-
-const logout = () => {
+const handleLogout = () => {
   userStore.logout()
   isMenuOpen.value = false
+  router.push('/')
 }
 </script>
