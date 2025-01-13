@@ -2,13 +2,19 @@ class AuthService {
   constructor() {
     this.users = null;
     this.currentUser = null;
+    // Get base URL from import.meta.env or fallback to repository name for GitHub Pages
+    this.baseUrl = import.meta.env.BASE_URL || '/pwa-Explorer-onboarding';
   }
 
   async initialize() {
     try {
-      // Load users data from JSON
-      const response = await fetch('/data/users.json');
+      // Use the correct base URL for GitHub Pages
+      const response = await fetch(`${this.baseUrl}/data/users.json`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
+      console.log('Loaded users:', data); // Debug log
       this.users = data.users;
       return true;
     } catch (error) {
@@ -19,13 +25,24 @@ class AuthService {
 
   async login(email, password) {
     try {
+      if (!this.users) {
+        await this.initialize();
+      }
+      
       // Hash the provided password
       const hashedPassword = await this.hashPassword(password);
+      console.log('Login attempt:', { email, hashedPassword }); // Debug log
       
       // Find matching user
-      const user = this.users.find(u => 
-        u.email === email && u.passwordHash === hashedPassword
-      );
+      const user = this.users.find(u => {
+        const match = u.email === email && u.passwordHash === hashedPassword;
+        console.log('Comparing:', { 
+          userEmail: u.email, 
+          inputEmail: email,
+          passwordMatch: u.passwordHash === hashedPassword 
+        });
+        return match;
+      });
       
       if (user) {
         // Create sanitized user object (without password hash)

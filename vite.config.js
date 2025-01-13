@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/',
+  base: '/pwa-Explorer-onboarding/',
   server: {
     port: 3000,
     strictPort: true,
@@ -30,8 +30,8 @@ export default defineConfig({
         background_color: '#0A0A0F',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/',
-        scope: '/',
+        start_url: '/pwa-Explorer-onboarding/',
+        scope: '/pwa-Explorer-onboarding/',
         categories: ['productivity', 'utilities'],
         icons: [
           {
@@ -123,12 +123,12 @@ export default defineConfig({
         shortcuts: [
           {
             name: 'Home',
-            url: '/',
+            url: '/pwa-Explorer-onboarding/',
             icons: [{ src: 'icons/dashboard-96x96.png', sizes: '96x96', type: 'image/png' }]
           },
           {
             name: 'Profile',
-            url: '/profile',
+            url: '/pwa-Explorer-onboarding/profile',
             icons: [{ src: 'icons/profile-96x96.png', sizes: '96x96', type: 'image/png' }]
           }
         ]
@@ -145,8 +145,8 @@ export default defineConfig({
           'sw.js',
           'workbox-*.js'
         ],
-        navigateFallback: '/index.html',
-        navigateFallbackAllowlist: [/^\/\//],
+        navigateFallback: '/pwa-Explorer-onboarding/index.html',
+        navigateFallbackAllowlist: [/^\/pwa-Explorer-onboarding\/\//],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
