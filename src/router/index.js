@@ -30,6 +30,10 @@ const router = createRouter({
       name: 'AdminRequests',
       component: () => import('../views/AdminRequestsView.vue'),
       meta: { requiresAuth: true, requiresAdmin: true }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/'
     }
   ]
 })
@@ -55,12 +59,6 @@ router.beforeEach((to, from, next) => {
         return
       }
     }
-  }
-  
-  // If going to login page while already authenticated, redirect to home
-  if (to.path === '/login' && userStore.isAuthenticated) {
-    next({ path: '/' })
-    return
   }
   
   next()
