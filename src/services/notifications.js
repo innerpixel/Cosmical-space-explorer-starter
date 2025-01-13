@@ -20,9 +20,12 @@ export const showNotification = async (title, options = {}) => {
     return;
   }
 
+  // Get the base URL from Vite's env
+  const baseUrl = import.meta.env.BASE_URL;
+
   const defaultOptions = {
-    icon: '/public/icons/icon-192x192.png',
-    badge: '/public/icons/icon-72x72.png',
+    icon: `${baseUrl}icons/icon-192x192.png`,
+    badge: `${baseUrl}icons/icon-72x72.png`,
     vibrate: [200, 100, 200],
     ...options
   };

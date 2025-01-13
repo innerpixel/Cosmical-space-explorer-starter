@@ -39,10 +39,11 @@ const sendBasicNotification = () => {
 const sendCustomNotification = async () => {
   if ('serviceWorker' in navigator) {
     const registration = await navigator.serviceWorker.ready;
+    const baseUrl = import.meta.env.BASE_URL;
     registration.showNotification('New Message', {
       body: 'You have a new message from Space Explorer!',
-      icon: '/public/icons/icon-192x192.png',
-      badge: '/public/icons/icon-72x72.png',
+      icon: `${baseUrl}icons/icon-192x192.png`,
+      badge: `${baseUrl}icons/icon-72x72.png`,
       vibrate: [200, 100, 200],
       actions: [
         {
