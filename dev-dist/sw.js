@@ -4546,8 +4546,11 @@ clientsClaim();
  * See https://goo.gl/S9QRab
  */
 precacheAndRoute([{
+  "url": "registerSW.js",
+  "revision": "3ca0b8505b4bec776b69afdba2768812"
+}, {
   "url": "/pwa-Explorer-onboarding/index.html",
-  "revision": "0.ri7l8bs08bg"
+  "revision": "0.jbitukmjm3"
 }], {});
 cleanupOutdatedCaches();
 registerRoute(new NavigationRoute(createHandlerBoundToURL("/pwa-Explorer-onboarding/index.html"), {

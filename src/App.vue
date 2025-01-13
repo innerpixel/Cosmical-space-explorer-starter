@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col">
-    <TopBar />
-    <main class="flex-1 pb-12">
+    <main class="flex-1">
       <RouterView />
     </main>
     <BottomBar />
@@ -9,7 +8,6 @@
 </template>
 
 <script setup>
-import TopBar from './components/TopBar.vue'
 import BottomBar from './components/BottomBar.vue'
 </script>
 
