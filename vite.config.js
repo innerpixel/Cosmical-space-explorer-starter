@@ -30,8 +30,8 @@ export default defineConfig({
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/',
-        scope: '/',
+        start_url: '/pwa-Explorer-onboarding/',
+        scope: '/pwa-Explorer-onboarding/',
         categories: ['productivity', 'utilities'],
         icons: [
           {
@@ -154,7 +154,7 @@ export default defineConfig({
               cacheName: 'google-fonts-cache',
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 
+                maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
               },
               cacheableResponse: {
                 statuses: [0, 200]
