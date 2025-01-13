@@ -1,89 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <style>
-    @keyframes planetPulse {
-      0% { r: 9; fill: #6366F1; }
-      25% { fill: #818CF8; }
-      50% { r: 10; fill: #A78BFA; }
-      75% { fill: #60A5FA; }
-      100% { r: 9; fill: #6366F1; }
-    }
-    @keyframes ringRotate1 {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    @keyframes ringRotate2 {
-      from { transform: rotate(360deg); }
-      to { transform: rotate(0deg); }
-    }
-    @keyframes energyPulse {
-      0% { stroke-width: 0.5; opacity: 0.3; stroke: #4F46E5; }
-      33% { stroke: #818CF8; }
-      50% { stroke-width: 2; opacity: 0.8; stroke: #A78BFA; }
-      66% { stroke: #60A5FA; }
-      100% { stroke-width: 0.5; opacity: 0.3; stroke: #4F46E5; }
-    }
-    @keyframes twinkle {
-      0% { transform: scale(1); opacity: 1; fill: white; }
-      50% { transform: scale(1.5); opacity: 0.7; fill: #A78BFA; }
-      100% { transform: scale(1); opacity: 1; fill: white; }
-    }
-    @keyframes glowPulse {
-      0% { opacity: 0.1; }
-      50% { opacity: 0.3; }
-      100% { opacity: 0.1; }
-    }
-    .planet { animation: planetPulse 4s ease-in-out infinite; }
-    .ring1 { 
-      transform-origin: center;
-      animation: ringRotate1 12s linear infinite;
-    }
-    .ring2 { 
-      transform-origin: center;
-      animation: ringRotate2 8s linear infinite;
-    }
-    .energy-ring {
-      animation: energyPulse 3s ease-in-out infinite;
-    }
-    .glow {
-      animation: glowPulse 4s ease-in-out infinite;
-    }
-    .star { animation: twinkle 2s ease-in-out infinite; }
-    .star2 { animation: twinkle 2s ease-in-out infinite 0.6s; }
-    .star3 { animation: twinkle 2s ease-in-out infinite 1.2s; }
-  </style>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Outer glow filter -->
+    <defs>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+            <feFlood flood-color="#00fff2" flood-opacity="0.5" result="color"/>
+            <feComposite in="color" in2="blur" operator="in" result="glow"/>
+            <feMerge>
+                <feMergeNode in="glow"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
 
-  <!-- Background Circle -->
-  <circle cx="28" cy="28" r="27" fill="#1a1a2e" stroke="#4F46E5" stroke-width="2"/>
-  
-  <!-- Planet Glow -->
-  <circle class="glow" cx="28" cy="28" r="14" fill="url(#planetGlow)" />
-  
-  <!-- Energy Rings -->
-  <circle class="energy-ring" cx="28" cy="28" r="16" stroke-width="1" fill="none"/>
-  <circle class="energy-ring" cx="28" cy="28" r="13" stroke-width="1" fill="none" style="animation-delay: -1.5s"/>
-  
-  <!-- Rotating Rings -->
-  <g class="ring1">
-    <ellipse cx="28" cy="28" rx="19" ry="5" stroke="#4F46E5" stroke-width="1" fill="none" transform="rotate(30)"/>
-  </g>
-  <g class="ring2">
-    <ellipse cx="28" cy="28" rx="15" ry="4" stroke="#818CF8" stroke-width="1" fill="none" transform="rotate(-15)"/>
-  </g>
-  
-  <!-- Planet -->
-  <defs>
-    <radialGradient id="planetGlow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0%" stop-color="#A78BFA" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#4F46E5" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <circle class="planet" cx="28" cy="28" r="9" fill="#6366F1"/>
-  
-  <!-- Stars -->
-  <circle class="star" cx="16" cy="16" r="1.4" fill="white"/>
-  <circle class="star2" cx="40" cy="40" r="1.4" fill="white"/>
-  <circle class="star3" cx="35" cy="14" r="1.4" fill="white"/>
-  <circle class="star" cx="21" cy="42" r="1.4" fill="white"/>
-  <circle class="star2" cx="12" cy="28" r="1.4" fill="white"/>
+    <!-- Background circle with gradient -->
+    <circle cx="256" cy="256" r="240" fill="url(#circleGradient)" filter="url(#glow)" />
+    
+    <!-- Gradient definition -->
+    <defs>
+        <radialGradient id="circleGradient" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stop-color="#06B6D4" />
+            <stop offset="50%" stop-color="#0891B2" />
+            <stop offset="100%" stop-color="#0E7490" />
+        </radialGradient>
+    </defs>
+
+    <!-- Orbit rings -->
+    <g filter="url(#glow)">
+        <circle cx="256" cy="256" r="180" stroke="#06B6D4" stroke-width="4" fill="none" opacity="0.6" />
+        <circle cx="256" cy="256" r="140" stroke="#0891B2" stroke-width="4" fill="none" opacity="0.8" />
+        <circle cx="256" cy="256" r="100" stroke="#0E7490" stroke-width="4" fill="none" />
+    </g>
+
+    <!-- Planets -->
+    <circle cx="436" cy="256" r="20" fill="#06B6D4" filter="url(#glow)" />
+    <circle cx="256" cy="76" r="16" fill="#0891B2" filter="url(#glow)" />
+    <circle cx="116" cy="256" r="12" fill="#0E7490" filter="url(#glow)" />
+
+    <!-- Center star -->
+    <path d="M256 216 L276 256 L256 296 L236 256 Z" fill="#06B6D4" filter="url(#glow)" />
+    <path d="M216 256 L256 236 L296 256 L256 276 Z" fill="#06B6D4" filter="url(#glow)" />
 </svg>
