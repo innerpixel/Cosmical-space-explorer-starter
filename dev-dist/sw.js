@@ -4549,11 +4549,11 @@ precacheAndRoute([{
   "url": "registerSW.js",
   "revision": "3ca0b8505b4bec776b69afdba2768812"
 }, {
-  "url": "/pwa-Explorer-onboarding/index.html",
-  "revision": "0.n0f1058n02"
+  "url": "/Cosmical-space-explorer-starter/index.html",
+  "revision": "0.g9rt6qbh6e8"
 }], {});
 cleanupOutdatedCaches();
-registerRoute(new NavigationRoute(createHandlerBoundToURL("/pwa-Explorer-onboarding/index.html"), {
+registerRoute(new NavigationRoute(createHandlerBoundToURL("/Cosmical-space-explorer-starter/index.html"), {
   allowlist: [/^\/$/]
 }));
 registerRoute(/^https:\/\/fonts\.googleapis\.com\/.*/i, new CacheFirst({
