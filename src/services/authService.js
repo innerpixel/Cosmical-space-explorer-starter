@@ -2,19 +2,30 @@ class AuthService {
   constructor() {
     this.users = null;
     this.currentUser = null;
-    // Get base URL from import.meta.env or fallback to repository name for GitHub Pages
-    this.baseUrl = import.meta.env.BASE_URL || '/Cosmical-space-explorer-starter';
+    // Get base URL from import.meta.env, ensuring it doesn't have a trailing slash
+    this.baseUrl = (import.meta.env.VITE_APP_BASE_URL || '/Cosmical-space-explorer-starter').replace(/\/$/, '');
   }
 
   async initialize() {
     try {
       // Use the correct base URL for GitHub Pages
-      const response = await fetch(`${this.baseUrl}/data/users.json`);
+      const url = `${this.baseUrl}/data/users.json`;
+      console.log('Fetching users from:', url); // Debug log
+      
+      const response = await fetch(url);
       if (!response.ok) {
+        console.error('Failed to fetch users:', response.status, response.statusText);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      
       const data = await response.json();
       console.log('Loaded users:', data); // Debug log
+      
+      if (!data || !Array.isArray(data.users)) {
+        console.error('Invalid users data format:', data);
+        throw new Error('Invalid users data format');
+      }
+      
       this.users = data.users;
       return true;
     } catch (error) {

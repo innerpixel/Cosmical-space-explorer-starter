@@ -73,15 +73,19 @@
               </div>
             </div>
 
+            <div v-if="error" class="mt-4">
+              <p class="text-red-500 text-sm">{{ error }}</p>
+            </div>
+
             <button
               type="submit"
-              class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md
-                     shadow-button hover:shadow-button-hover
-                     text-white bg-interface-button-primary hover:bg-interface-button-hover
-                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-interface-button-hover
-                     transition-all duration-200 animate-glow-pulse"
+              :disabled="loading"
+              class="w-full py-2 px-4 bg-space-accent-cyan hover:bg-space-accent-cyan-dark 
+                     text-white font-semibold rounded-md shadow-glow-cyan
+                     transition-all duration-200 disabled:opacity-50"
             >
-              Sign in
+              <span v-if="loading">Logging in...</span>
+              <span v-else>Login</span>
             </button>
           </form>
         </div>
@@ -101,18 +105,24 @@ const userStore = useUserStore()
 const email = ref('')
 const password = ref('')
 const rememberMe = ref(false)
+const error = ref('')
+const loading = ref(false)
 
-const handleLogin = async () => {
+async function handleLogin() {
+  error.value = ''
+  loading.value = true
+  
   try {
-    const credentials = {
+    await userStore.login({
       email: email.value,
       password: password.value
-    }
-    
-    await userStore.login(credentials)
+    })
     router.push('/')
-  } catch (error) {
-    console.error('Login failed:', error)
+  } catch (err) {
+    console.error('Login error:', err)
+    error.value = err.message || 'Failed to login. Please check your credentials and try again.'
+  } finally {
+    loading.value = false
   }
 }
 </script>
