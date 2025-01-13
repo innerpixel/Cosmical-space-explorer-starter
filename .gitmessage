@@ -1,0 +1,38 @@
+# 🎯 Type(scope): Brief description
+
+# 🎨 Details of Changes:
+# - 
+# - 
+
+# 🔍 Context (Why is this change needed?):
+# - 
+
+# 🧪 Testing:
+# - 
+
+# --- Emoji Quick Reference ---
+# 🚀 Deploy/Major Feature  | Example: 🚀 feat(auth): Add OAuth integration
+# 🐛 Bug Fix              | Example: 🐛 fix(login): Resolve token expiration issue
+# ✨ New Feature          | Example: ✨ feat(ui): Add dark mode support
+# 🎨 Style/UI            | Example: 🎨 style(navbar): Update color scheme
+# 🔧 Configuration       | Example: 🔧 chore(deps): Update dependencies
+# 📚 Documentation       | Example: 📚 docs(api): Update endpoint docs
+# 🧪 Testing             | Example: 🧪 test(auth): Add login flow tests
+# 🔒 Security            | Example: 🔒 fix(auth): Enhance password hashing
+# 🎯 Performance         | Example: 🎯 perf(queries): Optimize database calls
+# 🧹 Cleanup            | Example: 🧹 refactor(utils): Remove unused code
+# 
+# --- Space Theme Specific ---
+# 🛸 Space Features      | Example: 🛸 feat(explore): Add galaxy map
+# 🌠 Visual Effects      | Example: 🌠 style(stars): Add twinkling effect
+# 🌍 Earth/Planet        | Example: 🌍 feat(worlds): Add planet viewer
+# 🌌 Galaxy             | Example: 🌌 feat(nav): Add constellation guide
+# 👾 Interactive        | Example: 👾 feat(game): Add space minigame
+# 🛰️ Systems           | Example: 🛰️ feat(track): Add satellite tracker
+#
+# --- Commit Message Structure ---
+# <emoji> type(scope): subject
+#
+# [optional body]
+#
+# [optional footer]
