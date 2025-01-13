@@ -50,10 +50,10 @@
         <!-- Mobile Menu Button -->
         <button 
           @click="isMenuOpen = !isMenuOpen"
-          class="md:hidden text-cyan-400 hover:text-cyan-300 focus:outline-none glow"
+          class="md:hidden text-cyan-400 hover:text-cyan-300 focus:outline-none glow p-2 rounded-lg bg-transparent border border-cyan-800/50 hover:border-cyan-600/50 transition-all duration-300"
         >
-          <span v-if="!isMenuOpen">☰</span>
-          <span v-else>✕</span>
+          <span v-if="!isMenuOpen" class="text-xl">☰</span>
+          <span v-else class="text-xl">✕</span>
         </button>
 
         <!-- User Actions -->
@@ -81,7 +81,7 @@
     <!-- Mobile Menu -->
     <div 
       v-if="isMenuOpen"
-      class="md:hidden absolute w-full bg-black border-t border-cyan-800 shadow-[0_0_20px_rgba(6,182,212,0.3)] z-50"
+      class="md:hidden absolute w-full bg-black/95 backdrop-blur-sm border-t border-cyan-800/50 shadow-[0_0_20px_rgba(6,182,212,0.3)] z-50"
     >
       <div class="px-4 py-2 space-y-2">
         <router-link 

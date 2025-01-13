@@ -170,7 +170,7 @@
                         <div class="flex items-center">
                           <input 
                             type="checkbox"
-                            class="h-4 w-4 bg-space-dark border-interface-border rounded 
+                            class="h-4 w-4 bg-transparent border-interface-border rounded 
                                    text-interface-button-primary focus:ring-interface-button-hover
                                    transition-colors duration-200"
                           >
