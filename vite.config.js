@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/pwa-Explorer-onboarding/',
+  base: '/Cosmical-space-explorer-starter/',
   server: {
     port: 3000,
     strictPort: true,
@@ -30,8 +30,8 @@ export default defineConfig({
         background_color: '#0A0A0F',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/pwa-Explorer-onboarding/',
-        scope: '/pwa-Explorer-onboarding/',
+        start_url: '/Cosmical-space-explorer-starter/',
+        scope: '/Cosmical-space-explorer-starter/',
         categories: ['productivity', 'utilities'],
         icons: [
           {
@@ -123,12 +123,12 @@ export default defineConfig({
         shortcuts: [
           {
             name: 'Home',
-            url: '/pwa-Explorer-onboarding/',
+            url: '/Cosmical-space-explorer-starter/',
             icons: [{ src: 'icons/dashboard-96x96.png', sizes: '96x96', type: 'image/png' }]
           },
           {
             name: 'Profile',
-            url: '/pwa-Explorer-onboarding/profile',
+            url: '/Cosmical-space-explorer-starter/profile',
             icons: [{ src: 'icons/profile-96x96.png', sizes: '96x96', type: 'image/png' }]
           }
         ]
@@ -145,8 +145,8 @@ export default defineConfig({
           'sw.js',
           'workbox-*.js'
         ],
-        navigateFallback: '/pwa-Explorer-onboarding/index.html',
-        navigateFallbackAllowlist: [/^\/pwa-Explorer-onboarding\/\//],
+        navigateFallback: '/Cosmical-space-explorer-starter/index.html',
+        navigateFallbackAllowlist: [/^\/Cosmical-space-explorer-starter\/\//],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
