@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "admin@example.com",
+      "passwordHash": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+      "profile": {
+        "id": 1,
+        "type": "admin",
+        "name": "Admin User"
+      }
+    },
+    {
+      "id": 2,
+      "email": "developer@example.com",
+      "passwordHash": "c9bb1d6c803a4a3b4994c5fef4b5c85d40f12b99e345a89a51e526a799acc7c6",
+      "profile": {
+        "id": 2,
+        "type": "developer",
+        "name": "Developer User"
+      }
+    },
+    {
+      "id": 3,
+      "email": "user@example.com",
+      "passwordHash": "04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb",
+      "profile": {
+        "id": 3,
+        "type": "member",
+        "name": "Regular User"
+      }
+    }
+  ]
+}

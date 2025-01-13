@@ -82,25 +82,24 @@
       </div>
     </div>
   </nav>
-
-  <!-- Spacer to prevent content from being hidden under the fixed nav -->
-  <div class="h-16"></div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '../stores/userStore'
 
 const route = useRoute()
+const router = useRouter()
 const userStore = useUserStore()
 
 const currentRoute = computed(() => route.path)
 const isAuthenticated = computed(() => userStore.isAuthenticated)
 const isAdmin = computed(() => userStore.isAdmin)
 
-const handleLogout = () => {
-  userStore.logout()
+const handleLogout = async () => {
+  await userStore.logout()
+  router.push('/login')
 }
 </script>
 
@@ -108,16 +107,9 @@ const handleLogout = () => {
 .bg-scan-lines {
   background: linear-gradient(
     180deg,
-    transparent 0%,
-    rgba(6, 182, 212, 0.05) 50%,
-    transparent 100%
+    rgba(6, 182, 212, 0.05) 1px,
+    transparent 1px
   );
-  background-size: 100% 4px;
-  animation: scan 8s linear infinite;
-}
-
-@keyframes scan {
-  from { background-position: 0 0; }
-  to { background-position: 0 100%; }
+  background-size: 100% 3px;
 }
 </style>

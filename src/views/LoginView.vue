@@ -104,11 +104,12 @@ const rememberMe = ref(false)
 
 const handleLogin = async () => {
   try {
-    await userStore.login({
+    const credentials = {
       email: email.value,
-      password: password.value,
-      rememberMe: rememberMe.value
-    })
+      password: password.value
+    }
+    
+    await userStore.login(credentials)
     router.push('/')
   } catch (error) {
     console.error('Login failed:', error)

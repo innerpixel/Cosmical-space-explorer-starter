@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/pwa-Explorer-onboarding/' : '/',
+  base: '/',
   server: {
     port: 3000,
     strictPort: true,
@@ -30,8 +30,8 @@ export default defineConfig({
         background_color: '#0A0A0F',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/pwa-Explorer-onboarding/',
-        scope: '/pwa-Explorer-onboarding/',
+        start_url: '/',
+        scope: '/',
         categories: ['productivity', 'utilities'],
         icons: [
           {
@@ -145,8 +145,8 @@ export default defineConfig({
           'sw.js',
           'workbox-*.js'
         ],
-        navigateFallback: '/pwa-Explorer-onboarding/index.html',
-        navigateFallbackAllowlist: [/^\/pwa-Explorer-onboarding\//],
+        navigateFallback: '/index.html',
+        navigateFallbackAllowlist: [/^\/\//],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
