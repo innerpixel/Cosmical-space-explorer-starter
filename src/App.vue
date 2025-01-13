@@ -7,18 +7,8 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
-import { useUserStore } from './stores/userStore'
 import TopBar from './components/TopBar.vue'
 import Footer from './components/Footer.vue'
-
-const userStore = useUserStore()
-
-onMounted(() => {
-  if (!userStore.isAuthenticated) {
-    userStore.login({ username: 'admin', password: 'admin' })
-  }
-})
 </script>
 
 <style>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
   <style>
     @keyframes planetPulse {
-      0% { r: 8; fill: #6366F1; }
+      0% { r: 9; fill: #6366F1; }
       25% { fill: #818CF8; }
-      50% { r: 9; fill: #A78BFA; }
+      50% { r: 10; fill: #A78BFA; }
       75% { fill: #60A5FA; }
-      100% { r: 8; fill: #6366F1; }
+      100% { r: 9; fill: #6366F1; }
     }
     @keyframes ringRotate1 {
       from { transform: rotate(0deg); }
@@ -54,21 +54,21 @@
   </style>
 
   <!-- Background Circle -->
-  <circle cx="24" cy="24" r="23" fill="#1a1a2e" stroke="#4F46E5" stroke-width="2"/>
+  <circle cx="28" cy="28" r="27" fill="#1a1a2e" stroke="#4F46E5" stroke-width="2"/>
   
   <!-- Planet Glow -->
-  <circle class="glow" cx="24" cy="24" r="12" fill="url(#planetGlow)" />
+  <circle class="glow" cx="28" cy="28" r="14" fill="url(#planetGlow)" />
   
   <!-- Energy Rings -->
-  <circle class="energy-ring" cx="24" cy="24" r="14" stroke-width="1" fill="none"/>
-  <circle class="energy-ring" cx="24" cy="24" r="11" stroke-width="1" fill="none" style="animation-delay: -1.5s"/>
+  <circle class="energy-ring" cx="28" cy="28" r="16" stroke-width="1" fill="none"/>
+  <circle class="energy-ring" cx="28" cy="28" r="13" stroke-width="1" fill="none" style="animation-delay: -1.5s"/>
   
   <!-- Rotating Rings -->
   <g class="ring1">
-    <ellipse cx="24" cy="24" rx="16" ry="4" stroke="#4F46E5" stroke-width="1" fill="none" transform="rotate(30)"/>
+    <ellipse cx="28" cy="28" rx="19" ry="5" stroke="#4F46E5" stroke-width="1" fill="none" transform="rotate(30)"/>
   </g>
   <g class="ring2">
-    <ellipse cx="24" cy="24" rx="13" ry="3" stroke="#818CF8" stroke-width="1" fill="none" transform="rotate(-15)"/>
+    <ellipse cx="28" cy="28" rx="15" ry="4" stroke="#818CF8" stroke-width="1" fill="none" transform="rotate(-15)"/>
   </g>
   
   <!-- Planet -->
@@ -78,12 +78,12 @@
       <stop offset="100%" stop-color="#4F46E5" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <circle class="planet" cx="24" cy="24" r="8" fill="#6366F1"/>
+  <circle class="planet" cx="28" cy="28" r="9" fill="#6366F1"/>
   
   <!-- Stars -->
-  <circle class="star" cx="14" cy="14" r="1.2" fill="white"/>
-  <circle class="star2" cx="34" cy="34" r="1.2" fill="white"/>
-  <circle class="star3" cx="30" cy="12" r="1.2" fill="white"/>
-  <circle class="star" cx="18" cy="36" r="1.2" fill="white"/>
-  <circle class="star2" cx="10" cy="24" r="1.2" fill="white"/>
+  <circle class="star" cx="16" cy="16" r="1.4" fill="white"/>
+  <circle class="star2" cx="40" cy="40" r="1.4" fill="white"/>
+  <circle class="star3" cx="35" cy="14" r="1.4" fill="white"/>
+  <circle class="star" cx="21" cy="42" r="1.4" fill="white"/>
+  <circle class="star2" cx="12" cy="28" r="1.4" fill="white"/>
 </svg>

@@ -16,6 +16,28 @@ const PROFILE_PRIVILEGES = {
   member: ['view_content']
 }
 
+// Mock API function - replace with real API calls
+const mockAuthApi = {
+  async login(credentials) {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 500))
+    
+    // For development, only accept specific credentials
+    if (credentials.username === 'admin' && credentials.password === 'admin') {
+      return {
+        user: {
+          id: 1,
+          username: 'admin',
+          email: 'admin@example.com'
+        },
+        token: 'mock-jwt-token'
+      }
+    }
+    
+    throw new Error('Invalid credentials')
+  }
+}
+
 export const useUserStore = defineStore('user', () => {
   // State
   const user = ref(null)
@@ -23,7 +45,8 @@ export const useUserStore = defineStore('user', () => {
   const currentProfile = ref(null)
   const pendingRequests = ref([])
   const isAuthenticated = ref(false)
-  const error = ref(null)
+  const error = ref('')
+  const token = ref(null)
 
   // Getters
   const isAdmin = computed(() => {
@@ -35,34 +58,18 @@ export const useUserStore = defineStore('user', () => {
   })
 
   const availableProfileSlots = computed(() => {
-    if (isAdmin.value) return 999 // Admins have unlimited slots
-    if (!user.value) return 0
-    
-    const maxSlots = {
-      [PROFILE_TYPES.DEVELOPER]: 3,
-      [PROFILE_TYPES.CONTRIBUTOR]: 2,
-      [PROFILE_TYPES.MEMBER]: 1
-    }
-
-    const currentSlots = profiles.value.length
-    const maxAllowedSlots = Math.max(
-      ...profiles.value.map(p => maxSlots[p.type] || 0)
-    )
-
-    return Math.max(0, maxAllowedSlots - currentSlots)
+    return 3 - profiles.value.length
   })
 
   // Actions
-  function login(credentials) {
+  async function login(credentials) {
     try {
-      // For development, accept any credentials
-      user.value = {
-        id: 1,
-        username: credentials.username,
-        email: 'admin@example.com'
-      }
+      const response = await mockAuthApi.login(credentials)
       
-      // Add admin profile for development
+      user.value = response.user
+      token.value = response.token
+      
+      // Set admin profile if admin user
       if (credentials.username === 'admin') {
         profiles.value = [{
           id: 1,
@@ -73,9 +80,10 @@ export const useUserStore = defineStore('user', () => {
       }
       
       isAuthenticated.value = true
+      error.value = ''
       saveToLocalStorage()
     } catch (err) {
-      error.value = 'Login failed'
+      error.value = err.message
       throw err
     }
   }
@@ -86,21 +94,21 @@ export const useUserStore = defineStore('user', () => {
     currentProfile.value = null
     pendingRequests.value = []
     isAuthenticated.value = false
+    token.value = null
     clearLocalStorage()
   }
 
-  function requestNewProfile(profileData) {
-    if (!isAuthenticated.value) throw new Error('Must be logged in')
-    if (availableProfileSlots.value <= 0) throw new Error('No available profile slots')
+  async function requestNewProfile(profileData) {
+    if (!isAuthenticated.value) {
+      throw new Error('Must be authenticated to request a profile')
+    }
 
     const request = {
       id: Date.now(),
       userId: user.value.id,
       type: profileData.type,
-      description: profileData.description,
-      skills: profileData.skills,
       status: 'pending',
-      created: new Date().toISOString()
+      createdAt: new Date().toISOString()
     }
 
     pendingRequests.value.push(request)
@@ -108,63 +116,55 @@ export const useUserStore = defineStore('user', () => {
     return request
   }
 
-  function approveProfileRequest(requestId) {
-    if (!isAdmin.value) throw new Error('Must be admin')
+  async function approveProfileRequest(requestId) {
+    if (!isAdmin.value) {
+      throw new Error('Must be admin to approve requests')
+    }
 
     const request = pendingRequests.value.find(r => r.id === requestId)
-    if (!request) throw new Error('Request not found')
+    if (!request) {
+      throw new Error('Request not found')
+    }
 
-    request.status = 'approved'
-    
     const newProfile = {
       id: Date.now(),
       type: request.type,
-      userId: request.userId,
-      created: new Date().toISOString()
+      userId: request.userId
     }
 
     profiles.value.push(newProfile)
+    pendingRequests.value = pendingRequests.value.filter(r => r.id !== requestId)
     saveToLocalStorage()
     return newProfile
   }
 
-  function rejectProfileRequest(requestId) {
-    if (!isAdmin.value) throw new Error('Must be admin')
-
-    const request = pendingRequests.value.find(r => r.id === requestId)
-    if (!request) throw new Error('Request not found')
-
-    request.status = 'rejected'
-    saveToLocalStorage()
-    return request
-  }
-
   // Local Storage Management
   function saveToLocalStorage() {
-    const state = {
+    localStorage.setItem('user', JSON.stringify({
       user: user.value,
       profiles: profiles.value,
       currentProfile: currentProfile.value,
       pendingRequests: pendingRequests.value,
-      isAuthenticated: isAuthenticated.value
-    }
-    localStorage.setItem('userStore', JSON.stringify(state))
+      isAuthenticated: isAuthenticated.value,
+      token: token.value
+    }))
   }
 
   function loadFromLocalStorage() {
-    const state = localStorage.getItem('userStore')
-    if (state) {
-      const parsed = JSON.parse(state)
-      user.value = parsed.user
-      profiles.value = parsed.profiles
-      currentProfile.value = parsed.currentProfile
-      pendingRequests.value = parsed.pendingRequests
-      isAuthenticated.value = parsed.isAuthenticated
+    const stored = localStorage.getItem('user')
+    if (stored) {
+      const data = JSON.parse(stored)
+      user.value = data.user
+      profiles.value = data.profiles
+      currentProfile.value = data.currentProfile
+      pendingRequests.value = data.pendingRequests
+      isAuthenticated.value = data.isAuthenticated
+      token.value = data.token
     }
   }
 
   function clearLocalStorage() {
-    localStorage.removeItem('userStore')
+    localStorage.removeItem('user')
   }
 
   // Initialize store
@@ -178,6 +178,7 @@ export const useUserStore = defineStore('user', () => {
     pendingRequests,
     isAuthenticated,
     error,
+    token,
     PROFILE_TYPES,
     PROFILE_PRIVILEGES,
 
@@ -190,7 +191,6 @@ export const useUserStore = defineStore('user', () => {
     login,
     logout,
     requestNewProfile,
-    approveProfileRequest,
-    rejectProfileRequest
+    approveProfileRequest
   }
 })

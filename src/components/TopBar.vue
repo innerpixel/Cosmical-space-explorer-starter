@@ -5,7 +5,7 @@
         <!-- Logo/Title -->
         <router-link to="/" class="flex items-center space-x-3 group">
           <div class="transform transition-transform duration-500 group-hover:scale-110">
-            <img src="../assets/logo.svg" alt="CSMCL SPACE Logo - Interactive space exploration logo with mouse-following rocket" class="h-14 w-14" />
+            <img src="../assets/logo.svg" alt="CSMCL SPACE Logo - Interactive space exploration logo with mouse-following rocket" class="h-12 w-12" />
           </div>
           <span class="text-xl font-bold text-white group-hover:text-indigo-200 transition-colors duration-500">CSMCL SPACE</span>
         </router-link>
@@ -15,14 +15,14 @@
           <router-link 
             to="/" 
             class="text-gray-100 hover:text-white hover:underline transition-colors"
-            :class="{ 'font-bold': $route.path === '/' }"
+            :class="{ 'font-bold': currentRoute === '/' }"
           >
             Home
           </router-link>
           <router-link 
             to="/docs" 
             class="text-gray-100 hover:text-white hover:underline transition-colors"
-            :class="{ 'font-bold': $route.path === '/docs' }"
+            :class="{ 'font-bold': currentRoute === '/docs' }"
           >
             Documentation
           </router-link>
@@ -30,7 +30,7 @@
             v-if="isAuthenticated"
             to="/profile/request" 
             class="text-gray-100 hover:text-white hover:underline transition-colors"
-            :class="{ 'font-bold': $route.path === '/profile/request' }"
+            :class="{ 'font-bold': currentRoute === '/profile/request' }"
           >
             Request Profile
           </router-link>
@@ -38,7 +38,7 @@
             v-if="isAdmin"
             to="/admin/requests" 
             class="text-gray-100 hover:text-white hover:underline transition-colors"
-            :class="{ 'font-bold': $route.path === '/admin/requests' }"
+            :class="{ 'font-bold': currentRoute === '/admin/requests' }"
           >
             Admin
           </router-link>
@@ -49,10 +49,8 @@
           @click="isMenuOpen = !isMenuOpen"
           class="md:hidden text-white hover:text-gray-200 focus:outline-none"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path v-if="!isMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            <path v-else stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <span v-if="!isMenuOpen">☰</span>
+          <span v-else>✕</span>
         </button>
 
         <!-- User Actions -->
@@ -86,7 +84,7 @@
         <router-link 
           to="/" 
           class="block py-2 text-gray-100 hover:text-white hover:bg-indigo-500 rounded-lg px-3 transition-colors"
-          :class="{ 'font-bold': $route.path === '/' }"
+          :class="{ 'bg-indigo-500': currentRoute === '/' }"
           @click="isMenuOpen = false"
         >
           Home
@@ -94,7 +92,7 @@
         <router-link 
           to="/docs" 
           class="block py-2 text-gray-100 hover:text-white hover:bg-indigo-500 rounded-lg px-3 transition-colors"
-          :class="{ 'font-bold': $route.path === '/docs' }"
+          :class="{ 'bg-indigo-500': currentRoute === '/docs' }"
           @click="isMenuOpen = false"
         >
           Documentation
@@ -103,7 +101,7 @@
           v-if="isAuthenticated"
           to="/profile/request" 
           class="block py-2 text-gray-100 hover:text-white hover:bg-indigo-500 rounded-lg px-3 transition-colors"
-          :class="{ 'font-bold': $route.path === '/profile/request' }"
+          :class="{ 'bg-indigo-500': currentRoute === '/profile/request' }"
           @click="isMenuOpen = false"
         >
           Request Profile
@@ -112,7 +110,7 @@
           v-if="isAdmin"
           to="/admin/requests" 
           class="block py-2 text-gray-100 hover:text-white hover:bg-indigo-500 rounded-lg px-3 transition-colors"
-          :class="{ 'font-bold': $route.path === '/admin/requests' }"
+          :class="{ 'bg-indigo-500': currentRoute === '/admin/requests' }"
           @click="isMenuOpen = false"
         >
           Admin
@@ -146,13 +144,16 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useUserStore } from '../stores/userStore'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 const userStore = useUserStore()
 const isMenuOpen = ref(false)
 
 const isAuthenticated = computed(() => userStore.isAuthenticated)
 const isAdmin = computed(() => userStore.isAdmin)
 const username = computed(() => userStore.username)
+const currentRoute = computed(() => route?.path || '/')
 
 const login = () => {
   userStore.login()
