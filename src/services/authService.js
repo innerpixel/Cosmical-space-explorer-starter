@@ -40,22 +40,25 @@ class AuthService {
         await this.initialize();
       }
       
+      console.log('Starting login process for email:', email); // Debug log
       // Hash the provided password
       const hashedPassword = await this.hashPassword(password);
-      console.log('Login attempt:', { email, hashedPassword }); // Debug log
+      console.log('Generated hash for login attempt:', hashedPassword); // Debug log
       
       // Find matching user
       const user = this.users.find(u => {
-        const match = u.email === email && u.passwordHash === hashedPassword;
-        console.log('Comparing:', { 
-          userEmail: u.email, 
-          inputEmail: email,
-          passwordMatch: u.passwordHash === hashedPassword 
-        });
-        return match;
+        console.log('Checking user:', { 
+          userEmail: u.email,
+          storedHash: u.passwordHash,
+          generatedHash: hashedPassword,
+          emailMatch: u.email === email,
+          hashMatch: u.passwordHash === hashedPassword
+        }); // Debug log
+        return u.email === email && u.passwordHash === hashedPassword;
       });
       
       if (user) {
+        console.log('Login successful for user:', user.email); // Debug log
         // Create sanitized user object (without password hash)
         this.currentUser = {
           id: user.id,
@@ -68,10 +71,11 @@ class AuthService {
         return this.currentUser;
       }
       
+      console.log('No matching user found'); // Debug log
       throw new Error('Invalid credentials');
     } catch (error) {
       console.error('Login failed:', error);
-      throw new Error('Login failed. Please try again.');
+      throw error; // Propagate the original error
     }
   }
 
@@ -82,17 +86,30 @@ class AuthService {
   }
 
   async hashPassword(password) {
-    // Convert password string to bytes
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    
-    // Generate hash
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    
-    // Convert hash to hex string
-    return Array.from(new Uint8Array(hashBuffer))
-      .map(b => b.toString(16).padStart(2, '0'))
-      .join('');
+    try {
+      console.log('Starting password hashing...'); // Debug log
+      
+      // Convert password string to bytes
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      console.log('Password encoded to bytes, length:', data.length); // Debug log
+      
+      // Generate hash
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      console.log('Hash buffer generated, length:', hashBuffer.byteLength); // Debug log
+      
+      // Convert hash to hex string
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+      
+      console.log('Final hash generated, length:', hashHex.length); // Debug log
+      return hashHex;
+    } catch (error) {
+      console.error('Error during password hashing:', error);
+      throw error;
+    }
   }
 
   saveToStorage(user) {

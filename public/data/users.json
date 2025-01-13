@@ -13,7 +13,7 @@
     {
       "id": 2,
       "email": "developer@example.com",
-      "passwordHash": "c9bb1d6c803a4a3b4994c5fef4b5c85d40f12b99e345a89a51e526a799acc7c6",
+      "passwordHash": "88fa0d759f845b47c044c2cd44e29082cf6fea665c30c146374ec7c8f3d699e3",
       "profile": {
         "id": 2,
         "type": "developer",
