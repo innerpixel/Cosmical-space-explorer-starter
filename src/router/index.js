@@ -32,6 +32,15 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresAdmin: true }
     },
     {
+      path: '/notifications',
+      name: 'notifications',
+      component: () => import('../views/AdminNotifications.vue'),
+      meta: {
+        requiresAuth: true,
+        requiresAdmin: true
+      }
+    },
+    {
       path: '/showcase',
       name: 'ComponentShowcase',
       component: () => import('../views/ComponentShowcase.vue')
