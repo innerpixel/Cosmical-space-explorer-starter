@@ -11,7 +11,14 @@ export default defineConfig({
     host: true, 
     https: false,
     cors: true,
-    open: true 
+    open: true,
+    proxy: {
+      '/api/v1': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   },
   build: {
     outDir: 'dist',

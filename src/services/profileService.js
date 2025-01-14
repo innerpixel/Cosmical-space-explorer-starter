@@ -1,72 +1,144 @@
-import api from './api'
-import { storageService, STORAGE_KEYS } from './localStorageService'
-import { useNotifications } from './notifications'
+import { authService } from './authService';
 
-const notifications = useNotifications()
+class ProfileService {
+  constructor() {
+    this.baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+  }
 
-export const profileService = {
   async submitRequest(requestData) {
     try {
-      const response = await api.post('/profile/request', requestData)
-      notifications.success('Profile request submitted successfully')
-      return response.data
+      const token = authService.getToken();
+      const response = await fetch(`${this.baseUrl}/profile/request`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit profile request');
+      }
+
+      return await response.json();
     } catch (error) {
-      notifications.error('Failed to submit profile request')
-      throw error
+      console.error('Profile request error:', error);
+      throw error;
     }
-  },
+  }
 
   async getPendingRequests() {
     try {
-      const response = await api.get('/profile/requests/pending')
-      return response.data
-    } catch (error) {
-      notifications.error('Failed to fetch pending requests')
-      throw error
-    }
-  },
+      const token = authService.getToken();
+      const response = await fetch(`${this.baseUrl}/profile/requests/pending`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+      });
 
-  async approveRequest(requestId) {
-    try {
-      const response = await api.post(`/profile/request/${requestId}/approve`)
-      notifications.success('Profile request approved')
-      return response.data
-    } catch (error) {
-      notifications.error('Failed to approve request')
-      throw error
-    }
-  },
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch pending requests');
+      }
 
-  async rejectRequest(requestId, reason) {
-    try {
-      const response = await api.post(`/profile/request/${requestId}/reject`, { reason })
-      notifications.success('Profile request rejected')
-      return response.data
+      return await response.json();
     } catch (error) {
-      notifications.error('Failed to reject request')
-      throw error
+      console.error('Get pending requests error:', error);
+      throw error;
     }
-  },
-
-  async getRequestStatus(requestId) {
-    try {
-      const response = await api.get(`/profile/request/${requestId}/status`)
-      return response.data
-    } catch (error) {
-      notifications.error('Failed to fetch request status')
-      throw error
-    }
-  },
+  }
 
   async getUserRequests() {
     try {
-      const response = await api.get('/profile/requests/user')
-      return response.data
+      const token = authService.getToken();
+      const response = await fetch(`${this.baseUrl}/profile/requests/user`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch user requests');
+      }
+
+      return await response.json();
     } catch (error) {
-      notifications.error('Failed to fetch user requests')
-      throw error
+      console.error('Get user requests error:', error);
+      throw error;
+    }
+  }
+
+  async approveRequest(requestId, note) {
+    try {
+      const token = authService.getToken();
+      const response = await fetch(`${this.baseUrl}/profile/request/${requestId}/approve`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ note }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to approve request');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Approve request error:', error);
+      throw error;
+    }
+  }
+
+  async rejectRequest(requestId, note) {
+    try {
+      const token = authService.getToken();
+      const response = await fetch(`${this.baseUrl}/profile/request/${requestId}/reject`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ note }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to reject request');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Reject request error:', error);
+      throw error;
+    }
+  }
+
+  async getRequestStatus(requestId) {
+    try {
+      const token = authService.getToken();
+      const response = await fetch(`${this.baseUrl}/profile/request/${requestId}/status`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch request status');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Get request status error:', error);
+      throw error;
     }
   }
 }
 
-export default profileService
+export const profileService = new ProfileService();
