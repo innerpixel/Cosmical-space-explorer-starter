@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import router from './router'
 import './style.css'
+import './styles/showcase-variables.css'
 import App from './App.vue'
 import { registerSW } from 'virtual:pwa-register'
 

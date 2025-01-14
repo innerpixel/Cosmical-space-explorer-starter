@@ -42,40 +42,48 @@ const router = createRouter({
     },
     {
       path: '/showcase',
-      name: 'ComponentShowcase',
-      component: () => import('../views/ComponentShowcase.vue')
+      component: () => import('../views/showcase/ComponentShowcase.vue'),
+      children: [
+        {
+          path: '',
+          name: 'ShowcaseOverview',
+          component: () => import('../views/showcase/ShowcaseOverview.vue')
+        },
+        {
+          path: 'layout',
+          name: 'ShowcaseLayout',
+          component: () => import('../views/showcase/ShowcaseLayoutDemo.vue')
+        },
+        {
+          path: 'components',
+          name: 'ShowcaseComponents',
+          component: () => import('../views/showcase/ShowcaseComponents.vue')
+        },
+        {
+          path: 'patterns',
+          name: 'ShowcasePatterns',
+          component: () => import('../views/showcase/ShowcasePatterns.vue')
+        }
+      ]
     },
     {
       path: '/:pathMatch(.*)*',
-      redirect: '/'
+      name: 'NotFound',
+      component: () => import('../views/NotFound.vue')
     }
   ]
 })
 
-// Navigation guards
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   
-  // Check if route requires authentication
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!userStore.isAuthenticated) {
-      next({
-        path: '/login',
-        query: { redirect: to.fullPath }
-      })
-      return
-    }
-    
-    // Check if route requires admin privileges
-    if (to.matched.some(record => record.meta.requiresAdmin)) {
-      if (!userStore.isAdmin) {
-        next({ path: '/' })
-        return
-      }
-    }
+  if (to.meta.requiresAuth && !userStore.isAuthenticated) {
+    next('/login')
+  } else if (to.meta.requiresAdmin && !userStore.isAdmin) {
+    next('/')
+  } else {
+    next()
   }
-  
-  next()
 })
 
 export default router

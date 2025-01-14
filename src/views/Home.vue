@@ -68,6 +68,73 @@
         </div>
       </div>
 
+      <!-- Component Showcase Section -->
+      <div class="px-4 md:px-6 lg:px-8 mb-16">
+        <div class="bg-space-darker p-8 rounded-lg border border-interface-border shadow-glow">
+          <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-interface-text-primary mb-4">
+              Explore Our Component Universe
+            </h2>
+            <p class="text-xl text-interface-text-muted max-w-2xl mx-auto">
+              Discover a galaxy of pre-built components, layouts, and patterns to accelerate your cosmic development journey.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <router-link to="/showcase/layout" class="bg-space-black p-6 rounded-lg border border-interface-border hover:border-interface-text-primary transition-all duration-200 group">
+              <div class="text-interface-text-primary mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-interface-text-primary mb-2">Layout System</h3>
+              <p class="text-interface-text-muted mb-4">Flexible grid systems and containers for perfect cosmic alignment.</p>
+              <span class="text-interface-text-primary group-hover:text-interface-button-hover">
+                Explore Layouts →
+              </span>
+            </router-link>
+
+            <router-link to="/showcase/components" class="bg-space-black p-6 rounded-lg border border-interface-border hover:border-interface-text-primary transition-all duration-200 group">
+              <div class="text-interface-text-primary mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-interface-text-primary mb-2">UI Components</h3>
+              <p class="text-interface-text-muted mb-4">Ready-to-use components for building stellar interfaces.</p>
+              <span class="text-interface-text-primary group-hover:text-interface-button-hover">
+                View Components →
+              </span>
+            </router-link>
+
+            <router-link to="/showcase/patterns" class="bg-space-black p-6 rounded-lg border border-interface-border hover:border-interface-text-primary transition-all duration-200 group">
+              <div class="text-interface-text-primary mb-4">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-interface-text-primary mb-2">UI Patterns</h3>
+              <p class="text-interface-text-muted mb-4">Common patterns and solutions for consistent experiences.</p>
+              <span class="text-interface-text-primary group-hover:text-interface-button-hover">
+                Discover Patterns →
+              </span>
+            </router-link>
+          </div>
+
+          <div class="text-center">
+            <router-link
+              to="/showcase"
+              class="inline-flex items-center px-6 py-3 border border-interface-button-primary rounded-md
+                     shadow-button hover:shadow-button-hover
+                     text-white bg-interface-button-primary hover:bg-interface-button-hover
+                     transition-all duration-200"
+            >
+              Launch Component Explorer
+            </router-link>
+          </div>
+        </div>
+      </div>
+
       <!-- CTA Section -->
       <div class="text-center">
         <router-link 
@@ -209,13 +276,10 @@
     transparent
   );
   transform: translateX(-100%);
-  animation: scan-text 3s ease-in-out infinite;
+  animation: scan-text 3s linear infinite;
 }
 
 @keyframes scan-text {
-  0% {
-    transform: translateX(-100%);
-  }
   100% {
     transform: translateX(100%);
   }
