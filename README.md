@@ -13,6 +13,38 @@ A modern Progressive Web App built with Vue 3, Vite, and PWA capabilities. This 
 - 🔍 SEO Friendly - Optimized for search engines
 - 📸 Screenshots - Desktop and mobile screenshots included
 
+## 🎯 App Functionality & Data Storage
+
+### Core Features
+- Space Object Exploration: Browse and learn about various celestial objects
+- Interactive Visualization: Dynamic visualization of space objects and their properties
+- Favorites System: Save and manage your favorite space objects
+- Search Functionality: Search through the cosmic database
+- Educational Content: Detailed information about astronomical phenomena
+
+### Data Management
+- **Local Storage**: 
+  - User preferences
+  - Favorite space objects
+  - Recent searches
+  - Cached data for offline access
+  
+- **Vuex Store Structure**:
+  - `user/`: User preferences and settings
+  - `space/`: Space objects and astronomical data
+  - `favorites/`: User's saved items
+  - `search/`: Search history and results
+
+### API Integration
+- NASA Open APIs integration for space data
+- Real-time space news and updates
+- Dynamic content updates
+
+### Offline Capabilities
+- Cached space object data
+- Offline browsing of previously viewed content
+- Synchronized updates when back online
+
 ## 🛠️ Quick Start
 
 ### Prerequisites
