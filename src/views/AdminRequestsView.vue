@@ -234,88 +234,92 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useUserStore } from '../stores/userStore'
-
-const userStore = useUserStore()
-
-// Mock data - replace with actual data from your store
-const pendingRequests = ref([
-  {
-    id: 1,
-    user: {
-      name: 'John Doe',
-      email: 'john@example.com'
-    },
-    type: 'Explorer',
-    status: 'pending',
-    date: new Date(),
-    description: 'Experienced space navigator with background in deep space exploration.',
-    skills: ['Space Navigation', 'Life Support Systems', 'Emergency Response']
-  },
-  // Add more mock requests
-])
+import { ref, computed, onMounted } from 'vue'
+import { profileService } from '../services/profileService'
 
 const searchQuery = ref('')
-const filterStatus = ref('all')
 const selectedRequest = ref(null)
+const pendingRequests = ref([])
+const isLoading = ref(false)
+const error = ref(null)
 
-const approvedToday = ref(5)
-const totalProcessed = ref(42)
-
-const filteredRequests = computed(() => {
-  return pendingRequests.value.filter(request => {
-    const matchesSearch = 
-      request.user.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      request.user.email.toLowerCase().includes(searchQuery.value.toLowerCase())
-    
-    const matchesStatus = 
-      filterStatus.value === 'all' || 
-      request.status === filterStatus.value
-
-    return matchesSearch && matchesStatus
-  })
-})
-
-const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  })
+// Load pending requests
+async function loadPendingRequests() {
+  isLoading.value = true
+  try {
+    const requests = await profileService.getPendingRequests()
+    pendingRequests.value = requests
+  } catch (err) {
+    error.value = err.message || 'Failed to load requests'
+  } finally {
+    isLoading.value = false
+  }
 }
 
-const viewRequest = (request) => {
+// Computed properties for statistics
+const approvedToday = computed(() => {
+  const today = new Date().toDateString()
+  return pendingRequests.value.filter(req => 
+    req.status === 'approved' && 
+    new Date(req.updatedAt).toDateString() === today
+  ).length
+})
+
+const totalProcessed = computed(() => 
+  pendingRequests.value.filter(req => 
+    req.status === 'approved' || req.status === 'rejected'
+  ).length
+)
+
+// Filter requests based on search query
+const filteredRequests = computed(() => {
+  const query = searchQuery.value.toLowerCase()
+  return pendingRequests.value.filter(req =>
+    req.user.name.toLowerCase().includes(query) ||
+    req.type.toLowerCase().includes(query) ||
+    req.description.toLowerCase().includes(query)
+  )
+})
+
+// Handle request actions
+async function approveRequest(requestId) {
+  try {
+    await profileService.approveRequest(requestId)
+    await loadPendingRequests()
+    selectedRequest.value = null
+  } catch (err) {
+    error.value = err.message || 'Failed to approve request'
+  }
+}
+
+async function rejectRequest(requestId) {
+  try {
+    await profileService.rejectRequest(requestId)
+    await loadPendingRequests()
+    selectedRequest.value = null
+  } catch (err) {
+    error.value = err.message || 'Failed to reject request'
+  }
+}
+
+function viewRequest(request) {
   selectedRequest.value = request
 }
 
-const approveRequest = async (requestId) => {
-  try {
-    await userStore.approveProfileRequest(requestId)
-    // Update local state
-    const request = pendingRequests.value.find(r => r.id === requestId)
-    if (request) {
-      request.status = 'approved'
-    }
-    selectedRequest.value = null
-  } catch (error) {
-    console.error('Failed to approve request:', error)
-  }
+function formatDate(date) {
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
 }
 
-const rejectRequest = async (requestId) => {
-  try {
-    await userStore.rejectProfileRequest(requestId)
-    // Update local state
-    const request = pendingRequests.value.find(r => r.id === requestId)
-    if (request) {
-      request.status = 'rejected'
-    }
-    selectedRequest.value = null
-  } catch (error) {
-    console.error('Failed to reject request:', error)
-  }
-}
+// Load requests on component mount
+onMounted(() => {
+  loadPendingRequests()
+})
 </script>
 
 <style scoped>

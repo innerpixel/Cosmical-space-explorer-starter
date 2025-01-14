@@ -116,13 +116,70 @@ const sections = ref([
         Security is paramount in space operations. All personnel must adhere to strict security
         protocols to maintain mission integrity.
       </p>
+      
       <div class="bg-space-dark rounded p-4 mb-4">
-        <h4 class="text-interface-text-primary mb-2">Clearance Levels</h4>
+        <h4 class="text-interface-text-primary mb-2">Role Hierarchy</h4>
+        <ul class="list-disc list-inside text-interface-text-muted mb-4">
+          <li>Administrator: Full system access and role management</li>
+          <li>Commander: Mission leadership and strategic operations</li>
+          <li>Engineer: Technical systems and maintenance</li>
+          <li>Scientist: Research and data analysis</li>
+          <li>Explorer: Field operations and exploration</li>
+          <li>Member: Basic platform access</li>
+        </ul>
+
+        <h4 class="text-interface-text-primary mb-2">Role Progression</h4>
+        <p class="text-interface-text-muted mb-4">
+          New users start as Members and can request role upgrades based on their qualifications and experience.
+          Role requests are reviewed and approved by administrators.
+        </p>
+
+        <h4 class="text-interface-text-primary mb-2">Test Credentials</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <p class="text-interface-text-primary font-semibold">Administrator Access</p>
+            <p class="text-interface-text-muted">Email: innerpixel@csmcl.space</p>
+            <p class="text-interface-text-muted">Password: adventure</p>
+          </div>
+          <div class="space-y-2">
+            <p class="text-interface-text-primary font-semibold">Explorer Access</p>
+            <p class="text-interface-text-muted">Email: explorer@csmcl.space</p>
+            <p class="text-interface-text-muted">Password: adventure</p>
+          </div>
+          <div class="space-y-2">
+            <p class="text-interface-text-primary font-semibold">Scientist Access</p>
+            <p class="text-interface-text-muted">Email: scientist@csmcl.space</p>
+            <p class="text-interface-text-muted">Password: adventure</p>
+          </div>
+          <div class="space-y-2">
+            <p class="text-interface-text-primary font-semibold">Engineer Access</p>
+            <p class="text-interface-text-muted">Email: engineer@csmcl.space</p>
+            <p class="text-interface-text-muted">Password: adventure</p>
+          </div>
+          <div class="space-y-2">
+            <p class="text-interface-text-primary font-semibold">Commander Access</p>
+            <p class="text-interface-text-muted">Email: commander@csmcl.space</p>
+            <p class="text-interface-text-muted">Password: adventure</p>
+          </div>
+        </div>
+
+        <div class="mt-4 p-4 bg-space-darker rounded border border-interface-border">
+          <h4 class="text-interface-text-primary mb-2">⚠️ Important Note</h4>
+          <p class="text-interface-text-muted">
+            These are test credentials for demonstration purposes. In a production environment,
+            each user should create their own secure account and follow proper security protocols.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-space-dark rounded p-4 mb-4">
+        <h4 class="text-interface-text-primary mb-2">Security Best Practices</h4>
         <ul class="list-disc list-inside text-interface-text-muted">
-          <li>Level 1: Basic Access</li>
-          <li>Level 2: Mission Control</li>
-          <li>Level 3: Command Authority</li>
-          <li>Level 4: Administrator</li>
+          <li>Use strong, unique passwords</li>
+          <li>Enable two-factor authentication when available</li>
+          <li>Never share your credentials</li>
+          <li>Log out after each session</li>
+          <li>Report any suspicious activity to administrators</li>
         </ul>
       </div>
     `

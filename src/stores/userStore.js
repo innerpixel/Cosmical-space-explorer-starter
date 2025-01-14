@@ -55,13 +55,34 @@ export const useUserStore = defineStore('user', () => {
     loading.value = true
     error.value = null
     try {
-      const loggedInUser = await authService.login(credentials.email, credentials.password)
-      user.value = loggedInUser
-      token.value = loggedInUser.token
-      profiles.value = [loggedInUser.profile]
-      currentProfile.value = loggedInUser.profile
+      const userData = await authService.login(credentials)
+      user.value = userData
+      token.value = userData.token
+      profiles.value = [userData.profile]
+      currentProfile.value = userData.profile
+      return userData
     } catch (err) {
-      error.value = err.message
+      console.error('Login error:', err)
+      error.value = err.message || 'Failed to login'
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function signup(userData) {
+    loading.value = true
+    error.value = null
+    try {
+      const newUser = await authService.signup(userData)
+      user.value = newUser
+      token.value = newUser.token
+      profiles.value = [newUser.profile]
+      currentProfile.value = newUser.profile
+      return newUser
+    } catch (err) {
+      console.error('Signup error:', err)
+      error.value = err.message || 'Failed to signup'
       throw err
     } finally {
       loading.value = false
@@ -155,6 +176,7 @@ export const useUserStore = defineStore('user', () => {
     // Actions
     login,
     logout,
+    signup,
     loadUserFromStorage,
     requestNewProfile,
     approveProfileRequest,

@@ -19,13 +19,17 @@ const userSchema = new mongoose.Schema({
   profile: {
     type: {
       type: String,
-      enum: ['admin', 'developer', 'contributor', 'member'],
+      enum: ['admin', 'explorer', 'scientist', 'engineer', 'commander', 'member'],
       default: 'member'
     },
     id: {
       type: mongoose.Schema.ObjectId,
       auto: true
     }
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
@@ -41,7 +45,10 @@ const userSchema = new mongoose.Schema({
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {
+  // Only run this function if password was modified
   if (!this.isModified('password')) return next()
+
+  // Hash the password with cost of 12
   this.password = await bcrypt.hash(this.password, 12)
   next()
 })

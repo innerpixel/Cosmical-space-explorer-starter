@@ -4,9 +4,29 @@ import cors from 'cors'
 import helmet from 'helmet'
 import rateLimit from 'express-rate-limit'
 import dotenv from 'dotenv'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+import connectDB from './config/db.js'
 import authRoutes from './routes/authRoutes.js'
+import profileRoutes from './routes/profileRoutes.js'
 
-dotenv.config()
+// Get directory path
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+// Load environment variables from the root directory
+dotenv.config({ path: join(__dirname, '../../.env') })
+
+console.log('Environment variables loaded:', {
+  MONGODB_URI: process.env.MONGODB_URI,
+  JWT_SECRET: process.env.JWT_SECRET,
+  PORT: process.env.PORT,
+  NODE_ENV: process.env.NODE_ENV,
+  FRONTEND_URL: process.env.FRONTEND_URL
+})
+
+// Connect to MongoDB
+connectDB()
 
 const app = express()
 
@@ -30,6 +50,7 @@ app.use(express.json({ limit: '10kb' }))
 
 // Routes
 app.use('/api/v1/auth', authRoutes)
+app.use('/api/profile', profileRoutes)
 
 // Error handling
 app.use((err, req, res, next) => {
@@ -41,14 +62,6 @@ app.use((err, req, res, next) => {
     message: err.message
   })
 })
-
-// Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/space-explorer', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('DB connection successful'))
-.catch(err => console.error('DB connection error:', err))
 
 // Start server
 const port = process.env.PORT || 5000

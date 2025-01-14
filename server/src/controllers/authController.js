@@ -4,6 +4,7 @@ import { promisify } from 'util'
 import AppError from '../utils/appError.js'
 
 const signToken = id => {
+  console.log('JWT_SECRET:', process.env.JWT_SECRET)
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN
   })
@@ -31,15 +32,24 @@ const createSendToken = (user, statusCode, res) => {
 
 export const signup = async (req, res, next) => {
   try {
+    const { email, password, isAdmin } = req.body
     const newUser = await User.create({
-      email: req.body.email,
-      password: req.body.password,
-      profile: { type: 'member' }
+      email,
+      password,
+      isAdmin: isAdmin || false,
+      profile: { 
+        type: isAdmin ? 'admin' : 'member'
+      }
     })
 
     createSendToken(newUser, 201, res)
   } catch (err) {
-    next(new AppError('Error creating user', 400))
+    console.error('Signup error:', err)
+    res.status(400).json({
+      status: 'fail',
+      message: 'Error creating user',
+      error: err.message
+    })
   }
 }
 
@@ -59,14 +69,17 @@ export const login = async (req, res, next) => {
 
     createSendToken(user, 200, res)
   } catch (err) {
-    next(new AppError('Error logging in', 400))
+    next(err)
   }
 }
 
 export const protect = async (req, res, next) => {
   try {
     let token
-    if (req.headers.authorization?.startsWith('Bearer')) {
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith('Bearer')
+    ) {
       token = req.headers.authorization.split(' ')[1]
     }
 
@@ -75,8 +88,8 @@ export const protect = async (req, res, next) => {
     }
 
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
-    const user = await User.findById(decoded.id)
 
+    const user = await User.findById(decoded.id)
     if (!user) {
       return next(new AppError('User no longer exists', 401))
     }
@@ -88,7 +101,7 @@ export const protect = async (req, res, next) => {
     req.user = user
     next()
   } catch (err) {
-    next(new AppError('Authentication failed', 401))
+    next(err)
   }
 }
 

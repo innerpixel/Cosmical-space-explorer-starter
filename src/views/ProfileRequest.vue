@@ -135,10 +135,13 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { profileService } from '../services/profileService'
 import { useUserStore } from '../stores/userStore'
 
 const router = useRouter()
 const userStore = useUserStore()
+const isLoading = ref(false)
+const error = ref(null)
 
 const formData = ref({
   type: '',
@@ -146,29 +149,34 @@ const formData = ref({
   skills: []
 })
 
-const isLoading = ref(false)
-const error = ref('')
-
 const availableSkills = [
   'Space Navigation',
-  'Life Support Systems',
-  'Quantum Mechanics',
-  'Xenobiology',
-  'Astro Engineering',
-  'Deep Space Communications',
-  'Zero-G Operations',
-  'Emergency Response'
+  'Astronomical Research',
+  'Data Analysis',
+  'Equipment Maintenance',
+  'Mission Planning',
+  'Resource Management',
+  'Communication Systems',
+  'Life Support Systems'
 ]
 
-const handleSubmit = async () => {
-  error.value = ''
+async function handleSubmit() {
   isLoading.value = true
-
+  error.value = null
+  
   try {
-    await userStore.requestProfile(formData.value)
-    router.push('/profile')
+    await profileService.submitRequest({
+      ...formData.value,
+      userId: userStore.user.id,
+      currentProfile: userStore.userProfile
+    })
+    
+    router.push({
+      path: '/profile',
+      query: { requestSubmitted: 'true' }
+    })
   } catch (err) {
-    error.value = err.message || 'Failed to submit profile request. Please try again.'
+    error.value = err.message || 'Failed to submit request'
   } finally {
     isLoading.value = false
   }
