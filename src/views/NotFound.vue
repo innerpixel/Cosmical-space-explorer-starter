@@ -44,9 +44,10 @@ export default {
 }
 
 .home-link {
-  @apply inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-interface-button;
+  @apply inline-flex items-center gap-2 px-6 py-3 rounded-lg;
+  @apply bg-space-darker hover:bg-space-dark;
   @apply text-interface-text-primary font-medium transition-all duration-200;
-  @apply hover:bg-interface-button-hover hover:scale-105;
+  @apply hover:scale-105;
   @apply focus:outline-none focus:ring-2 focus:ring-interface-text-primary/50;
 }
 
