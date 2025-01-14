@@ -117,6 +117,180 @@ npm run preview:prod
 └── scripts/           # Build and utility scripts
 ```
 
+## 👥 User Profiles & Authentication
+
+### Profile Types
+- **Admin**: Full system access and management capabilities
+- **Developer**: Content creation and technical access
+- **Contributor**: Content creation and submission
+- **Member**: Basic viewing and interaction privileges
+
+### Profile Features
+
+#### Basic User (Member)
+- Explore space missions and celestial objects
+- Access interactive space explorer interface
+- View detailed cosmic phenomena information
+- Browse component universe
+- Save favorite celestial objects
+- Access basic documentation
+
+#### Contributor (Additional)
+- Create new space object content
+- Submit space-related articles
+- Share discoveries
+- Add celestial object descriptions
+- Participate in community discussions
+
+#### Developer (Additional)
+- Create and edit all content
+- Access development tools and APIs
+- Modify existing descriptions
+- Create interactive features
+- Access technical documentation
+
+#### Admin (Full Access)
+- Manage user accounts and permissions
+- Approve/reject profile requests
+- Moderate content submissions
+- Access admin dashboard
+- Manage system configurations
+
+### System Architecture
+
+#### Authentication Setup
+```
+src/
+├── services/
+│   └── authService.js    # Authentication logic
+├── stores/
+│   └── userStore.js      # User state management
+├── router/
+│   └── index.js         # Route guards & protection
+└── views/
+    ├── ProfileRequest.vue       # Profile management
+    ├── AdminRequestsView.vue    # Admin controls
+    └── AdminNotifications.vue   # Admin notifications
+```
+
+#### Key Components
+1. **User Data**: Stored in `public/data/users.json`
+2. **Authentication Service**: Handles login, sessions, and tokens
+3. **User Store**: Manages state and privileges
+4. **Protected Routes**: Role-based access control
+5. **Local Storage**: Session and preference persistence
+
+#### Security Features
+- Password hashing with SHA-256
+- Token-based authentication
+- Route guards for protected content
+- Role-based access control
+- Secure session management
+
+### Profile Management
+
+#### Access Control
+```javascript
+// Route protection example
+{
+  path: '/admin/requests',
+  name: 'AdminRequests',
+  component: () => import('../views/AdminRequestsView.vue'),
+  meta: { requiresAuth: true, requiresAdmin: true }
+}
+```
+
+#### Profile Initialization
+- Automatic loading of user data
+- Profile type verification
+- Permission setup
+- Session restoration
+
+### System Flow
+
+#### Authentication Flow
+```mermaid
+sequenceDiagram
+    User->>+App: Access Application
+    App->>+AuthService: Check Authentication
+    AuthService->>+LocalStorage: Check Token
+    LocalStorage-->>-AuthService: Return Token Status
+    
+    alt Token Valid
+        AuthService-->>App: Authenticated
+        App->>UserStore: Load User Profile
+        App-->>User: Access Granted
+    else Token Invalid
+        AuthService-->>App: Not Authenticated
+        App-->>User: Redirect to Login
+    end
+```
+
+#### Profile Request Flow
+```mermaid
+sequenceDiagram
+    Member->>+App: Request Profile Upgrade
+    App->>+UserStore: Submit Request
+    UserStore->>+AdminNotifications: Create Notification
+    AdminNotifications-->>-UserStore: Notification Created
+    UserStore-->>-App: Request Pending
+    
+    Admin->>+App: Review Request
+    App->>+UserStore: Process Decision
+    
+    alt Request Approved
+        UserStore->>Member: Update Profile
+        UserStore->>Member: Send Notification
+    else Request Denied
+        UserStore->>Member: Send Notification
+    end
+```
+
+#### Access Control Flow
+1. **Initial Access**
+   - User attempts to access route
+   - Router guard checks authentication
+   - Verifies user permissions
+   - Grants/denies access based on profile
+
+2. **Profile Upgrade Process**
+   - User initiates upgrade request
+   - System validates eligibility
+   - Admin receives notification
+   - Review and approval/denial
+   - Profile update if approved
+
+3. **Session Management**
+   - Token-based authentication
+   - Automatic session restoration
+   - Secure token storage
+   - Session expiration handling
+
+4. **Content Access Flow**
+   ```
+   User Request → Auth Check → Permission Check → Content Access
+        ↓             ↓              ↓                ↓
+    Validate     Check Token    Verify Profile    Grant Access
+   ```
+
+5. **Error Handling**
+   - Invalid credentials
+   - Expired sessions
+   - Unauthorized access
+   - Profile conflicts
+   - Network issues
+
+#### State Management Flow
+```javascript
+// Example of profile state management
+const profileState = {
+  current: null,    // Current active profile
+  pending: [],      // Pending profile requests
+  history: [],      // Profile change history
+  permissions: {}   // Active permissions
+}
+```
+
 ## 🤝 Contributing
 
 1. Fork the repository
