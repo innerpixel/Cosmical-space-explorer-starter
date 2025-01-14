@@ -1,6 +1,6 @@
 // @ts-ignore
 try {
-  self['workbox:core:7.2.0'] && _();
+  self['workbox:core:6.5.4'] && _();
 } catch (e) {}
 
 /*
@@ -453,7 +453,7 @@ const finalAssertExports = {
 
 // @ts-ignore
 try {
-  self['workbox:routing:7.2.0'] && _();
+  self['workbox:routing:6.5.4'] && _();
 } catch (e) {}
 
 /*
@@ -1540,7 +1540,7 @@ replaceTraps(oldTraps => _extends({}, oldTraps, {
 
 // @ts-ignore
 try {
-  self['workbox:expiration:7.2.0'] && _();
+  self['workbox:expiration:6.5.4'] && _();
 } catch (e) {}
 
 /*
@@ -2134,7 +2134,7 @@ class ExpirationPlugin {
 
 // @ts-ignore
 try {
-  self['workbox:cacheable-response:7.2.0'] && _();
+  self['workbox:cacheable-response:6.5.4'] && _();
 } catch (e) {}
 
 /*
@@ -2418,7 +2418,7 @@ function timeout(ms) {
 
 // @ts-ignore
 try {
-  self['workbox:strategies:7.2.0'] && _();
+  self['workbox:strategies:6.5.4'] && _();
 } catch (e) {}
 
 /*
@@ -2621,8 +2621,8 @@ class StrategyHandler {
    * defined on the strategy object.
    *
    * The following plugin lifecycle methods are invoked when using this method:
-   * - cacheKeyWillBeUsed()
-   * - cachedResponseWillBeUsed()
+   * - cacheKeyWillByUsed()
+   * - cachedResponseWillByUsed()
    *
    * @param {Request|string} key The Request or URL to use as the cache key.
    * @return {Promise<Response|undefined>} A matching response, if found.
@@ -2663,7 +2663,7 @@ class StrategyHandler {
    * the strategy object.
    *
    * The following plugin lifecycle methods are invoked when using this method:
-   * - cacheKeyWillBeUsed()
+   * - cacheKeyWillByUsed()
    * - cacheWillUpdate()
    * - cacheDidUpdate()
    *
@@ -3288,7 +3288,7 @@ function waitUntil(event, asyncFn) {
 
 // @ts-ignore
 try {
-  self['workbox:precaching:7.2.0'] && _();
+  self['workbox:precaching:6.5.4'] && _();
 } catch (e) {}
 
 /*
@@ -4549,8 +4549,8 @@ precacheAndRoute([{
   "url": "registerSW.js",
   "revision": "3ca0b8505b4bec776b69afdba2768812"
 }, {
-  "url": "/Cosmical-space-explorer-starter/index.html",
-  "revision": "0.g9rt6qbh6e8"
+  "revision": null,
+  "url": "/Cosmical-space-explorer-starter/index.html"
 }], {});
 cleanupOutdatedCaches();
 registerRoute(new NavigationRoute(createHandlerBoundToURL("/Cosmical-space-explorer-starter/index.html"), {

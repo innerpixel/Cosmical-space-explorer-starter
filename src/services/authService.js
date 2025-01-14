@@ -34,55 +34,31 @@ class AuthService {
     }
   }
 
-  async login(email, password) {
+  async login(credentials) {
     try {
-      if (!this.users) {
-        await this.initialize();
-      }
-      
-      console.log('Starting login process for email:', email); // Debug log
-      // Hash the provided password
-      const hashedPassword = await this.hashPassword(password);
-      console.log('Generated hash for login attempt:', hashedPassword); // Debug log
-      
-      // Find matching user
-      const user = this.users.find(u => {
-        console.log('Checking user:', { 
-          userEmail: u.email,
-          storedHash: u.passwordHash,
-          generatedHash: hashedPassword,
-          emailMatch: u.email === email,
-          hashMatch: u.passwordHash === hashedPassword
-        }); // Debug log
-        return u.email === email && u.passwordHash === hashedPassword;
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
       });
-      
-      if (user) {
-        console.log('Login successful for user:', user.email); // Debug log
-        // Create sanitized user object (without password hash)
-        this.currentUser = {
-          id: user.id,
-          email: user.email,
-          profile: user.profile
-        };
-        
-        // Store in localStorage
-        this.saveToStorage(this.currentUser);
-        return this.currentUser;
+
+      if (!response.ok) {
+        throw new Error('Login failed');
       }
-      
-      console.log('No matching user found'); // Debug log
-      throw new Error('Invalid credentials');
+
+      const data = await response.json();
+      localStorage.setItem('auth_token', data.token);
+      return data;
     } catch (error) {
-      console.error('Login failed:', error);
-      throw error; // Propagate the original error
+      console.error('Login error:', error);
+      throw error;
     }
   }
 
   logout() {
-    this.currentUser = null;
-    localStorage.removeItem('user');
-    localStorage.removeItem('authToken');
+    localStorage.removeItem('auth_token');
   }
 
   async hashPassword(password) {
