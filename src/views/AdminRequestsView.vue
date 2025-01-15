@@ -19,7 +19,7 @@
           <div class="bg-space-darker rounded-lg border border-interface-border shadow-glow p-6">
             <h3 class="text-interface-text-secondary text-sm font-medium mb-2">Pending Requests</h3>
             <p class="text-3xl font-bold text-interface-text-primary">
-              {{ pendingRequests.length }}
+              {{ missionStore.pendingRequests.length }}
             </p>
           </div>
           
@@ -151,7 +151,7 @@
 
     <!-- Request Details Modal -->
     <div
-      v-if="selectedRequest"
+      v-if="missionStore.selectedRequest"
       class="fixed inset-0 bg-black/75 flex items-center justify-center p-4 z-50"
     >
       <div class="bg-space-darker rounded-lg border border-interface-border shadow-glow max-w-2xl w-full">
@@ -159,7 +159,7 @@
           <div class="flex justify-between items-start mb-6">
             <h3 class="text-xl font-semibold text-interface-text-primary">Request Details</h3>
             <button
-              @click="selectedRequest = null"
+              @click="missionStore.setSelectedRequest(null)"
               class="text-interface-text-muted hover:text-interface-text-primary transition-colors"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,25 +171,25 @@
           <div class="space-y-4">
             <div>
               <h4 class="text-sm font-medium text-interface-text-secondary mb-1">User Information</h4>
-              <p class="text-interface-text-primary">{{ selectedRequest.user.name }}</p>
-              <p class="text-interface-text-muted">{{ selectedRequest.user.email }}</p>
+              <p class="text-interface-text-primary">{{ missionStore.selectedRequest.user.name }}</p>
+              <p class="text-interface-text-muted">{{ missionStore.selectedRequest.user.email }}</p>
             </div>
 
             <div>
               <h4 class="text-sm font-medium text-interface-text-secondary mb-1">Profile Type</h4>
-              <p class="text-interface-text-primary">{{ selectedRequest.type }}</p>
+              <p class="text-interface-text-primary">{{ missionStore.selectedRequest.type }}</p>
             </div>
 
             <div>
               <h4 class="text-sm font-medium text-interface-text-secondary mb-1">Mission Statement</h4>
-              <p class="text-interface-text-muted">{{ selectedRequest.description }}</p>
+              <p class="text-interface-text-muted">{{ missionStore.selectedRequest.description }}</p>
             </div>
 
             <div>
               <h4 class="text-sm font-medium text-interface-text-secondary mb-1">Specializations</h4>
               <div class="flex flex-wrap gap-2">
                 <span
-                  v-for="skill in selectedRequest.skills"
+                  v-for="skill in missionStore.selectedRequest.skills"
                   :key="skill"
                   class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
                          bg-space-accent-cyan-dark text-interface-text-primary"
@@ -202,7 +202,7 @@
 
           <div class="mt-6 flex justify-end space-x-3">
             <button
-              @click="selectedRequest = null"
+              @click="missionStore.setSelectedRequest(null)"
               class="px-4 py-2 border border-interface-border rounded-md
                      text-interface-text-muted hover:text-interface-text-primary
                      transition-colors duration-200"
@@ -210,8 +210,8 @@
               Close
             </button>
             <button
-              v-if="selectedRequest.status === 'pending'"
-              @click="approveRequest(selectedRequest.id)"
+              v-if="missionStore.selectedRequest.status === 'pending'"
+              @click="approveRequest(missionStore.selectedRequest.id)"
               class="px-4 py-2 border border-green-600 rounded-md
                      text-green-400 hover:bg-green-900/30
                      transition-colors duration-200"
@@ -219,8 +219,8 @@
               Approve
             </button>
             <button
-              v-if="selectedRequest.status === 'pending'"
-              @click="rejectRequest(selectedRequest.id)"
+              v-if="missionStore.selectedRequest.status === 'pending'"
+              @click="rejectRequest(missionStore.selectedRequest.id)"
               class="px-4 py-2 border border-red-600 rounded-md
                      text-red-400 hover:bg-red-900/30
                      transition-colors duration-200"
@@ -236,46 +236,15 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { profileService } from '../services/profileService'
+import { useMissionControlStore } from '../stores/missionControlStore'
 
+const missionStore = useMissionControlStore()
 const searchQuery = ref('')
 const filterStatus = ref('all')
-const selectedRequest = ref(null)
-const pendingRequests = ref([])
-const isLoading = ref(false)
-const error = ref(null)
-
-// Load pending requests
-async function loadPendingRequests() {
-  isLoading.value = true
-  try {
-    const requests = await profileService.getPendingRequests()
-    pendingRequests.value = requests
-  } catch (err) {
-    error.value = err.message || 'Failed to load requests'
-  } finally {
-    isLoading.value = false
-  }
-}
-
-// Computed properties for statistics
-const approvedToday = computed(() => {
-  const today = new Date().toDateString()
-  return pendingRequests.value.filter(req => 
-    req.status === 'approved' && 
-    new Date(req.updatedAt).toDateString() === today
-  ).length
-})
-
-const totalProcessed = computed(() => 
-  pendingRequests.value.filter(req => 
-    req.status === 'approved' || req.status === 'rejected'
-  ).length
-)
 
 // Filter requests based on search query and status
 const filteredRequests = computed(() => {
-  let filtered = pendingRequests.value
+  let filtered = missionStore.pendingRequests
 
   // Filter by status
   if (filterStatus.value !== 'all') {
@@ -291,35 +260,33 @@ const filteredRequests = computed(() => {
   )
 })
 
-// Handle request actions
+// Computed properties from store
+const { approvedToday, totalProcessed, isLoading, error } = missionStore
+
+function viewRequest(request) {
+  missionStore.setSelectedRequest(request)
+}
+
 async function approveRequest(requestId) {
   try {
-    await profileService.approveRequest(requestId)
-    await loadPendingRequests()
-    selectedRequest.value = null
+    await missionStore.approveRequest(requestId)
   } catch (err) {
-    error.value = err.message || 'Failed to approve request'
+    // Error is handled by the store
   }
 }
 
 async function rejectRequest(requestId) {
   try {
-    await profileService.rejectRequest(requestId)
-    await loadPendingRequests()
-    selectedRequest.value = null
+    await missionStore.rejectRequest(requestId)
   } catch (err) {
-    error.value = err.message || 'Failed to reject request'
+    // Error is handled by the store
   }
-}
-
-function viewRequest(request) {
-  selectedRequest.value = request
 }
 
 function formatDate(date) {
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
-    month: 'short',
+    month: 'long',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
@@ -328,7 +295,7 @@ function formatDate(date) {
 
 // Load requests on component mount
 onMounted(() => {
-  loadPendingRequests()
+  missionStore.fetchPendingRequests()
 })
 </script>
 
