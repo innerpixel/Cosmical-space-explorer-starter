@@ -1,232 +1,116 @@
 <template>
   <div class="min-h-screen bg-space-black pt-16">
-    <!-- Scan Lines Effect -->
-    <div class="absolute inset-0 bg-scan-lines opacity-10 pointer-events-none"></div>
-
-    <div class="container mx-auto px-4">
-      <!-- Main Content Container -->
-      <div class="max-w-6xl mx-auto space-y-8">
-        <!-- Header Section -->
-        <section class="prose prose-invert max-w-none text-center">
-          <h2 class="text-3xl font-bold text-interface-text-primary mb-4">Mission Control Center</h2>
-          <p class="text-xl text-interface-text-muted">
-            Review and manage profile access requests from our interstellar community
-          </p>
-        </section>
-
-        <!-- Stats Overview -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-space-darker rounded-lg border border-interface-border shadow-glow p-6">
-            <h3 class="text-interface-text-secondary text-sm font-medium mb-2">Pending Requests</h3>
-            <p class="text-3xl font-bold text-interface-text-primary">
-              {{ missionStore.pendingRequests.length }}
-            </p>
-          </div>
-          
-          <div class="bg-space-darker rounded-lg border border-interface-border shadow-glow p-6">
-            <h3 class="text-interface-text-secondary text-sm font-medium mb-2">Approved Today</h3>
-            <p class="text-3xl font-bold text-interface-text-primary">
-              {{ approvedToday }}
-            </p>
-          </div>
-          
-          <div class="bg-space-darker rounded-lg border border-interface-border shadow-glow p-6">
-            <h3 class="text-interface-text-secondary text-sm font-medium mb-2">Total Processed</h3>
-            <p class="text-3xl font-bold text-interface-text-primary">
-              {{ totalProcessed }}
-            </p>
-          </div>
+    <div class="w-full">
+      <!-- Mission Control Header -->
+      <div class="relative w-full mb-8">
+        <div class="bg-space-darker border-y border-interface-border p-8">
+          <h1 class="text-3xl font-bold text-interface-text-primary mb-4">Mission Control Center</h1>
+          <p class="text-interface-text-muted max-w-3xl">Manage and process explorer profile requests and clearance levels.</p>
         </div>
-
-        <!-- Main Content Section -->
-        <section class="bg-space-darker rounded-lg border border-interface-border shadow-glow overflow-hidden">
-          <div class="p-8">
-            <h3 class="text-xl font-semibold text-interface-text-primary mb-6">Pending Clearance Requests</h3>
-            
-            <!-- Search and Filter -->
-            <div class="flex flex-col md:flex-row gap-4 mb-6">
-              <input
-                v-model="searchQuery"
-                type="text"
-                placeholder="Search requests..."
-                class="flex-1 px-4 py-2 bg-space-dark border border-interface-border rounded-md 
-                       text-interface-text-primary placeholder-interface-text-muted/50
-                       focus:outline-none focus:ring-2 focus:ring-interface-border-hover
-                       transition-all duration-200"
-              >
-              
-              <select
-                v-model="filterStatus"
-                class="px-4 py-2 bg-space-dark border border-interface-border rounded-md 
-                       text-interface-text-primary
-                       focus:outline-none focus:ring-2 focus:ring-interface-border-hover
-                       transition-all duration-200"
-              >
-                <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
-              </select>
-            </div>
-
-            <!-- Table -->
-            <div class="overflow-x-auto">
-              <table class="w-full">
-                <thead>
-                  <tr class="border-b border-interface-border">
-                    <th class="text-left py-3 px-4 text-interface-text-secondary font-medium">User</th>
-                    <th class="text-left py-3 px-4 text-interface-text-secondary font-medium">Type</th>
-                    <th class="text-left py-3 px-4 text-interface-text-secondary font-medium">Status</th>
-                    <th class="text-left py-3 px-4 text-interface-text-secondary font-medium">Date</th>
-                    <th class="text-right py-3 px-4 text-interface-text-secondary font-medium">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr 
-                    v-for="request in filteredRequests" 
-                    :key="request.id"
-                    class="border-b border-interface-border hover:bg-space-dark/50 transition-colors duration-200"
-                  >
-                    <td class="py-4 px-4">
-                      <div class="text-interface-text-primary font-medium">{{ request.user.name }}</div>
-                      <div class="text-interface-text-muted text-sm">{{ request.user.email }}</div>
-                    </td>
-                    <td class="py-4 px-4">
-                      <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
-                                 bg-space-accent-cyan-dark text-interface-text-primary">
-                        {{ request.type }}
-                      </span>
-                    </td>
-                    <td class="py-4 px-4">
-                      <span 
-                        :class="{
-                          'bg-yellow-900/50 text-yellow-200': request.status === 'pending',
-                          'bg-green-900/50 text-green-200': request.status === 'approved',
-                          'bg-red-900/50 text-red-200': request.status === 'rejected'
-                        }"
-                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
-                      >
-                        {{ request.status }}
-                      </span>
-                    </td>
-                    <td class="py-4 px-4 text-interface-text-muted">
-                      {{ formatDate(request.date) }}
-                    </td>
-                    <td class="py-4 px-4 text-right space-x-2">
-                      <button
-                        @click="viewRequest(request)"
-                        class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium
-                               bg-space-dark border border-interface-border hover:bg-space-darker
-                               text-interface-text-primary transition-colors duration-200"
-                      >
-                        View
-                      </button>
-                      <button
-                        v-if="request.status === 'pending'"
-                        @click="approveRequest(request.id)"
-                        class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium
-                               bg-green-900/30 border border-green-700 hover:bg-green-900/50
-                               text-green-200 transition-colors duration-200"
-                      >
-                        Approve
-                      </button>
-                      <button
-                        v-if="request.status === 'pending'"
-                        @click="rejectRequest(request.id)"
-                        class="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium
-                               bg-red-900/30 border border-red-700 hover:bg-red-900/50
-                               text-red-200 transition-colors duration-200"
-                      >
-                        Reject
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
       </div>
-    </div>
 
-    <!-- Request Details Modal -->
-    <div
-      v-if="missionStore.selectedRequest"
-      class="fixed inset-0 bg-black/75 flex items-center justify-center p-4 z-50"
-    >
-      <div class="bg-space-darker rounded-lg border border-interface-border shadow-glow max-w-2xl w-full">
-        <div class="p-6">
-          <div class="flex justify-between items-start mb-6">
-            <h3 class="text-xl font-semibold text-interface-text-primary">Request Details</h3>
-            <button
-              @click="missionStore.setSelectedRequest(null)"
-              class="text-interface-text-muted hover:text-interface-text-primary transition-colors"
-            >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-          </div>
+      <!-- Mission Control Content -->
+      <div class="px-4 md:px-6 lg:px-8">
+        <!-- Scan Lines Effect -->
+        <div class="absolute inset-0 bg-scan-lines opacity-10 pointer-events-none"></div>
 
-          <div class="space-y-4">
-            <div>
-              <h4 class="text-sm font-medium text-interface-text-secondary mb-1">User Information</h4>
-              <p class="text-interface-text-primary">{{ missionStore.selectedRequest.user.name }}</p>
-              <p class="text-interface-text-muted">{{ missionStore.selectedRequest.user.email }}</p>
-            </div>
-
-            <div>
-              <h4 class="text-sm font-medium text-interface-text-secondary mb-1">Profile Type</h4>
-              <p class="text-interface-text-primary">{{ missionStore.selectedRequest.type }}</p>
-            </div>
-
-            <div>
-              <h4 class="text-sm font-medium text-interface-text-secondary mb-1">Mission Statement</h4>
-              <p class="text-interface-text-muted">{{ missionStore.selectedRequest.description }}</p>
-            </div>
-
-            <div>
-              <h4 class="text-sm font-medium text-interface-text-secondary mb-1">Specializations</h4>
-              <div class="flex flex-wrap gap-2">
-                <span
-                  v-for="skill in missionStore.selectedRequest.skills"
-                  :key="skill"
-                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                         bg-space-accent-cyan-dark text-interface-text-primary"
-                >
-                  {{ skill }}
-                </span>
+        <div class="max-w-7xl mx-auto">
+          <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Control Panel Sidebar -->
+            <div class="lg:col-span-1">
+              <div class="bg-space-darker rounded-lg border border-interface-border shadow-glow p-6 sticky top-24">
+                <h2 class="text-xl font-semibold text-interface-text-primary mb-4">Control Panel</h2>
+                <nav class="space-y-4">
+                  <div v-for="(stat, index) in requestStats" :key="index" 
+                       class="p-4 bg-space-dark rounded-lg border border-interface-border">
+                    <h3 class="text-interface-text-muted text-sm mb-1">{{ stat.label }}</h3>
+                    <p class="text-2xl font-bold text-interface-text-primary">{{ stat.value }}</p>
+                  </div>
+                  
+                  <div class="pt-4">
+                    <h3 class="text-interface-text-primary mb-2">Quick Filters</h3>
+                    <div class="space-y-2">
+                      <button v-for="filter in filters" :key="filter.id"
+                              :class="[
+                                'w-full text-left px-3 py-2 rounded transition-colors duration-200',
+                                activeFilter === filter.id 
+                                  ? 'bg-primary-600 text-white' 
+                                  : 'text-interface-text-muted hover:text-interface-text-primary'
+                              ]"
+                              @click="setFilter(filter.id)">
+                        {{ filter.label }}
+                      </button>
+                    </div>
+                  </div>
+                </nav>
               </div>
             </div>
-          </div>
 
-          <div class="mt-6 flex justify-end space-x-3">
-            <button
-              @click="missionStore.setSelectedRequest(null)"
-              class="px-4 py-2 border border-interface-border rounded-md
-                     text-interface-text-muted hover:text-interface-text-primary
-                     transition-colors duration-200"
-            >
-              Close
-            </button>
-            <button
-              v-if="missionStore.selectedRequest.status === 'pending'"
-              @click="approveRequest(missionStore.selectedRequest.id)"
-              class="px-4 py-2 border border-green-600 rounded-md
-                     text-green-400 hover:bg-green-900/30
-                     transition-colors duration-200"
-            >
-              Approve
-            </button>
-            <button
-              v-if="missionStore.selectedRequest.status === 'pending'"
-              @click="rejectRequest(missionStore.selectedRequest.id)"
-              class="px-4 py-2 border border-red-600 rounded-md
-                     text-red-400 hover:bg-red-900/30
-                     transition-colors duration-200"
-            >
-              Reject
-            </button>
+            <!-- Main Content Area -->
+            <div class="lg:col-span-3 space-y-8">
+              <!-- Search and Actions Bar -->
+              <div class="bg-space-darker rounded-lg border border-interface-border shadow-glow p-6">
+                <div class="flex flex-col sm:flex-row gap-4">
+                  <div class="flex-1">
+                    <input type="text" 
+                           v-model="searchQuery"
+                           placeholder="Search requests..." 
+                           class="w-full bg-space-dark border border-interface-border rounded-lg px-4 py-2 text-interface-text-primary focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
+                  </div>
+                  <div class="flex gap-2">
+                    <button class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200">
+                      Bulk Approve
+                    </button>
+                    <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200">
+                      Bulk Reject
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Requests List -->
+              <div class="bg-space-darker rounded-lg border border-interface-border shadow-glow">
+                <div class="p-6" v-if="loading">
+                  <div class="flex items-center justify-center">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+                  </div>
+                </div>
+
+                <div v-else-if="requests.length === 0" class="p-6 text-center text-interface-text-muted">
+                  No requests found matching your criteria.
+                </div>
+
+                <div v-else class="divide-y divide-interface-border">
+                  <div v-for="request in filteredRequests" 
+                       :key="request.id" 
+                       class="p-6 hover:bg-space-dark transition-colors duration-200">
+                    <div class="flex items-start justify-between">
+                      <div class="flex-1">
+                        <h3 class="text-lg font-semibold text-interface-text-primary mb-2">
+                          {{ request.user.name }}
+                        </h3>
+                        <p class="text-interface-text-muted mb-2">
+                          Requested Level: {{ request.requestedLevel }}
+                        </p>
+                        <p class="text-sm text-interface-text-muted">
+                          Submitted: {{ formatDate(request.submittedAt) }}
+                        </p>
+                      </div>
+                      <div class="flex gap-2">
+                        <button @click="approveRequest(request.id)"
+                                class="px-3 py-1 bg-green-600/20 text-green-400 border border-green-600/30 rounded hover:bg-green-600/30 transition-colors duration-200">
+                          Approve
+                        </button>
+                        <button @click="rejectRequest(request.id)"
+                                class="px-3 py-1 bg-red-600/20 text-red-400 border border-red-600/30 rounded hover:bg-red-600/30 transition-colors duration-200">
+                          Reject
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -235,107 +119,87 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useMissionControlStore } from '../stores/missionControlStore'
+import { storeToRefs } from 'pinia'
 
-const missionStore = useMissionControlStore()
+const missionControl = useMissionControlStore()
+const { pendingRequests: requests, isLoading: loading } = storeToRefs(missionControl)
+const { approveRequest, rejectRequest, fetchPendingRequests } = missionControl
+
 const searchQuery = ref('')
-const filterStatus = ref('all')
+const activeFilter = ref('all')
 
-// Filter requests based on search query and status
+// Request statistics
+const requestStats = computed(() => [
+  { label: 'Pending Requests', value: requests.value.length },
+  { label: 'Processed Today', value: missionControl.approvedToday },
+  { label: 'Total Processed', value: missionControl.totalProcessed }
+])
+
+// Quick filters
+const filters = [
+  { id: 'all', label: 'All Requests' },
+  { id: 'pending', label: 'Pending' },
+  { id: 'high-priority', label: 'High Priority' },
+  { id: 'low-priority', label: 'Low Priority' }
+]
+
+// Filtered and searched requests
 const filteredRequests = computed(() => {
-  let filtered = missionStore.pendingRequests
-
-  // Filter by status
-  if (filterStatus.value !== 'all') {
-    filtered = filtered.filter(req => req.status === filterStatus.value)
+  let filtered = [...requests.value]
+  
+  // Apply search filter
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase()
+    filtered = filtered.filter(request => 
+      request.user.name.toLowerCase().includes(query) ||
+      request.requestedLevel.toString().includes(query)
+    )
   }
-
-  // Filter by search query
-  const query = searchQuery.value.toLowerCase()
-  return filtered.filter(req =>
-    req.user?.name?.toLowerCase().includes(query) ||
-    req.type?.toLowerCase().includes(query) ||
-    req.description?.toLowerCase().includes(query)
-  )
+  
+  // Apply status filter
+  switch (activeFilter.value) {
+    case 'pending':
+      filtered = filtered.filter(request => !request.processed)
+      break
+    case 'high-priority':
+      filtered = filtered.filter(request => request.requestedLevel >= 3)
+      break
+    case 'low-priority':
+      filtered = filtered.filter(request => request.requestedLevel < 3)
+      break
+  }
+  
+  return filtered
 })
 
-// Computed properties from store
-const { approvedToday, totalProcessed, isLoading, error } = missionStore
-
-function viewRequest(request) {
-  missionStore.setSelectedRequest(request)
+const setFilter = (filterId) => {
+  activeFilter.value = filterId
 }
 
-async function approveRequest(requestId) {
-  try {
-    await missionStore.approveRequest(requestId)
-  } catch (err) {
-    // Error is handled by the store
-  }
-}
-
-async function rejectRequest(requestId) {
-  try {
-    await missionStore.rejectRequest(requestId)
-  } catch (err) {
-    // Error is handled by the store
-  }
-}
-
-function formatDate(date) {
+const formatDate = (date) => {
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
-    month: 'long',
+    month: 'short',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
   })
 }
 
-// Load requests on component mount
-onMounted(() => {
-  missionStore.fetchPendingRequests()
-})
+// Fetch requests on component mount
+fetchPendingRequests()
 </script>
 
 <style scoped>
 .bg-scan-lines {
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(6, 182, 212, 0.05) 50%,
-    transparent 100%
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 2px
   );
-  background-size: 100% 4px;
-  animation: scan 8s linear infinite;
-}
-
-@keyframes scan {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 0 100%;
-  }
-}
-
-/* Custom scrollbar for webkit browsers */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: theme('colors.space.darker');
-}
-
-::-webkit-scrollbar-thumb {
-  background: theme('colors.interface.border.DEFAULT');
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: theme('colors.interface.border.hover');
 }
 </style>
