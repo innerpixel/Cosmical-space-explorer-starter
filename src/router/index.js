@@ -15,6 +15,11 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue')
     },
     {
+      path: '/forgot-password',
+      name: 'ForgotPassword',
+      component: () => import('../views/ForgotPasswordView.vue')
+    },
+    {
       path: '/docs',
       name: 'Documentation',
       component: () => import('../views/Documentation.vue')
@@ -25,15 +30,20 @@ const router = createRouter({
       component: () => import('../views/ProfileRequest.vue'),
       meta: { requiresAuth: true }
     },
+    // Mission Control Center routes
     {
-      path: '/admin/requests',
-      name: 'AdminRequests',
+      path: '/admin/mission-control',
+      name: 'MissionControl',
       component: () => import('../views/AdminRequestsView.vue'),
       meta: { requiresAuth: true, requiresAdmin: true }
     },
     {
+      path: '/admin/requests',
+      redirect: '/admin/mission-control' // Redirect old path to new
+    },
+    {
       path: '/notifications',
-      name: 'notifications',
+      name: 'Notifications',
       component: () => import('../views/AdminNotifications.vue'),
       meta: {
         requiresAuth: true,
@@ -77,11 +87,19 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   
+  // Handle authentication
   if (to.meta.requiresAuth && !userStore.isAuthenticated) {
-    next('/login')
-  } else if (to.meta.requiresAdmin && !userStore.isAdmin) {
-    next('/')
-  } else {
+    next({ 
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+  } 
+  // Handle admin routes
+  else if (to.meta.requiresAdmin && !userStore.isAdmin) {
+    next({ path: '/' })
+  } 
+  // Allow navigation
+  else {
     next()
   }
 })
