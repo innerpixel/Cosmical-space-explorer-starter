@@ -53,7 +53,7 @@ class ProfileService {
   async getUserRequests() {
     try {
       const token = authService.getToken();
-      const response = await fetch(`${this.baseUrl}/profile/requests/user`, {
+      const response = await fetch(`${this.baseUrl}/profiles/requests/user`, {
         headers: {
           'Authorization': `Bearer ${token}`
         },
@@ -122,7 +122,7 @@ class ProfileService {
   async getRequestStatus(requestId) {
     try {
       const token = authService.getToken();
-      const response = await fetch(`${this.baseUrl}/profile/request/${requestId}/status`, {
+      const response = await fetch(`${this.baseUrl}/profiles/request/${requestId}/status`, {
         headers: {
           'Authorization': `Bearer ${token}`
         },
