@@ -50,7 +50,7 @@ app.use(express.json({ limit: '10kb' }))
 
 // Routes
 app.use('/api/v1/auth', authRoutes)
-app.use('/api/profile', profileRoutes)
+app.use('/api/v1/profiles', profileRoutes)
 
 // Error handling
 app.use((err, req, res, next) => {

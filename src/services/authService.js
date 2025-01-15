@@ -1,6 +1,7 @@
 class AuthService {
   constructor() {
-    this.baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+    this.baseUrl = 'http://localhost:5000/api/v1';
+    this.credentials = 'include';  // Add this to include cookies in requests
   }
 
   async initialize() {
@@ -24,6 +25,7 @@ class AuthService {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(credentials),
+        credentials: this.credentials,
       });
 
       if (!response.ok) {
@@ -52,6 +54,7 @@ class AuthService {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(userData),
+        credentials: this.credentials,
       });
 
       if (!response.ok) {

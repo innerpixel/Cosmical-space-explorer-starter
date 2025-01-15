@@ -32,7 +32,7 @@ class ProfileService {
   async getPendingRequests() {
     try {
       const token = authService.getToken();
-      const response = await fetch(`${this.baseUrl}/profile/requests/pending`, {
+      const response = await fetch(`${this.baseUrl}/admin/requests`, {
         headers: {
           'Authorization': `Bearer ${token}`
         },
@@ -50,37 +50,14 @@ class ProfileService {
     }
   }
 
-  async getUserRequests() {
+  async approveRequest(requestId) {
     try {
       const token = authService.getToken();
-      const response = await fetch(`${this.baseUrl}/profiles/requests/user`, {
+      const response = await fetch(`${this.baseUrl}/admin/requests/${requestId}/approve`, {
+        method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`
         },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to fetch user requests');
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Get user requests error:', error);
-      throw error;
-    }
-  }
-
-  async approveRequest(requestId, note) {
-    try {
-      const token = authService.getToken();
-      const response = await fetch(`${this.baseUrl}/profile/request/${requestId}/approve`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ note }),
       });
 
       if (!response.ok) {
@@ -95,16 +72,14 @@ class ProfileService {
     }
   }
 
-  async rejectRequest(requestId, note) {
+  async rejectRequest(requestId) {
     try {
       const token = authService.getToken();
-      const response = await fetch(`${this.baseUrl}/profile/request/${requestId}/reject`, {
-        method: 'POST',
+      const response = await fetch(`${this.baseUrl}/admin/requests/${requestId}/reject`, {
+        method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ note }),
       });
 
       if (!response.ok) {
@@ -115,27 +90,6 @@ class ProfileService {
       return await response.json();
     } catch (error) {
       console.error('Reject request error:', error);
-      throw error;
-    }
-  }
-
-  async getRequestStatus(requestId) {
-    try {
-      const token = authService.getToken();
-      const response = await fetch(`${this.baseUrl}/profiles/request/${requestId}/status`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to fetch request status');
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('Get request status error:', error);
       throw error;
     }
   }

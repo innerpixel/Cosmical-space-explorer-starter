@@ -30,7 +30,13 @@ const router = createRouter({
       component: () => import('../views/ProfileRequest.vue'),
       meta: { requiresAuth: true }
     },
-    // Mission Control Center routes
+    // Admin Routes
+    {
+      path: '/admin',
+      name: 'AdminDashboard',
+      component: () => import('../views/AdminDashboard.vue'),
+      meta: { requiresAuth: true, requiresAdmin: true }
+    },
     {
       path: '/admin/mission-control',
       name: 'MissionControl',
@@ -38,18 +44,21 @@ const router = createRouter({
       meta: { requiresAuth: true, requiresAdmin: true }
     },
     {
+      path: '/admin/notifications',
+      name: 'AdminNotifications',
+      component: () => import('../views/AdminNotifications.vue'),
+      meta: { requiresAuth: true, requiresAdmin: true }
+    },
+    // Redirects for old routes
+    {
       path: '/admin/requests',
-      redirect: '/admin/mission-control' // Redirect old path to new
+      redirect: '/admin/mission-control'
     },
     {
       path: '/notifications',
-      name: 'Notifications',
-      component: () => import('../views/AdminNotifications.vue'),
-      meta: {
-        requiresAuth: true,
-        requiresAdmin: true
-      }
+      redirect: '/admin/notifications'
     },
+    // Showcase routes
     {
       path: '/showcase',
       component: () => import('../views/showcase/ComponentShowcase.vue'),

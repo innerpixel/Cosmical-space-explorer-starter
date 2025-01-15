@@ -6,8 +6,12 @@ export const submitRequest = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Validation errors:', errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
+
+    console.log('Request body:', req.body);
+    console.log('User from request:', req.user);
 
     const { type, description, skills, currentProfile } = req.body;
     const userId = req.user.id; // From auth middleware
@@ -32,6 +36,8 @@ export const submitRequest = async (req, res) => {
       currentProfile
     });
 
+    console.log('Profile request to save:', profileRequest);
+
     await profileRequest.save();
 
     res.status(201).json({
@@ -40,8 +46,10 @@ export const submitRequest = async (req, res) => {
     });
   } catch (error) {
     console.error('Profile request submission error:', error);
+    console.error('Error stack:', error.stack);
     res.status(500).json({
-      message: 'Failed to submit profile request'
+      message: 'Failed to submit profile request',
+      error: error.message
     });
   }
 };

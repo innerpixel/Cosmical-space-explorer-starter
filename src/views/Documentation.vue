@@ -118,6 +118,28 @@ const sections = ref([
       </p>
       
       <div class="bg-space-dark rounded p-4 mb-4">
+        <h4 class="text-interface-text-primary mb-2">Selective Admission Protocol</h4>
+        <p class="text-interface-text-muted mb-4">
+          Access to deep space operations requires special clearance levels and strict vetting procedures:
+        </p>
+        <ul class="list-disc list-inside text-interface-text-muted mb-4">
+          <li>Level 1: Basic space operations and known celestial bodies</li>
+          <li>Level 2: Advanced propulsion systems and experimental technologies</li>
+          <li>Level 3: First contact protocols and xenological studies</li>
+          <li>Level 4: [CLASSIFIED] Deep space anomalies and temporal phenomena</li>
+          <li>Level 5: [TOP SECRET] Known worlds alliance protocols</li>
+        </ul>
+
+        <div class="bg-red-900/20 border border-red-700/50 rounded p-4 mb-4">
+          <h5 class="text-red-400 font-semibold mb-2">⚠️ Critical Notice</h5>
+          <p class="text-interface-text-muted">
+            Personnel seeking clearance beyond Level 3 must formally acknowledge departure from known space protocols
+            and accept the implications of accessing classified xenological information.
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-space-dark rounded p-4 mb-4">
         <h4 class="text-interface-text-primary mb-2">Role Hierarchy</h4>
         <ul class="list-disc list-inside text-interface-text-muted mb-4">
           <li>Administrator: Full system access and role management</li>
