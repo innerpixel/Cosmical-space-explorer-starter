@@ -68,7 +68,16 @@ rsync -avz --delete --exclude 'node_modules' --exclude 'dist' -e "ssh -i $SSH_KE
 print_status "Building project on VPS..."
 ssh -i "$SSH_KEY" root@$VPS_IP "cd ${BUILD_PATH} && npm install && npm run build && rm -rf ${DIST_PATH} && mv dist ${DEPLOY_PATH}/ && chown -R www-data:www-data ${DIST_PATH} && chmod -R 755 ${DIST_PATH}"
 
-# Step 5: Verify and reload Nginx
+# Step 5: Deploy backend API
+print_status "Deploying backend API..."
+ssh -i "$SSH_KEY" root@$VPS_IP "mkdir -p ${DEPLOY_PATH}/api"
+rsync -avz --delete --exclude 'node_modules' --exclude '.env' -e "ssh -i $SSH_KEY" ./server/ root@$VPS_IP:${DEPLOY_PATH}/api/
+
+# Step 6: Install backend dependencies and setup service
+print_status "Setting up backend service..."
+ssh -i "$SSH_KEY" root@$VPS_IP "cd ${DEPLOY_PATH}/api && npm install --production && chown -R www-data:www-data . && systemctl restart cosmical-api.service"
+
+# Step 7: Verify and reload Nginx
 print_status "Verifying Nginx configuration..."
 ssh -i "$SSH_KEY" root@$VPS_IP "nginx -t && systemctl reload nginx"
 
