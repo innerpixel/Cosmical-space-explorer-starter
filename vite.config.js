@@ -4,7 +4,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/Cosmical-space-explorer-starter/',
+  base: '/',
   server: {
     port: 3000,
     strictPort: true,
@@ -44,8 +44,8 @@ export default defineConfig({
         background_color: '#0A0A0F',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/Cosmical-space-explorer-starter/',
-        scope: '/Cosmical-space-explorer-starter/',
+        start_url: '/',
+        scope: '/',
         categories: ['productivity', 'utilities'],
         icons: [
           {
