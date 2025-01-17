@@ -142,6 +142,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import api from '../services/api'
 
 const router = useRouter()
 const email = ref('')
@@ -159,25 +160,19 @@ async function handleResetRequest() {
   success.value = null
   
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/v1/auth/forgot-password`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email: email.value })
+    const response = await api.post('/auth/forgot-password', {
+      email: email.value
     })
 
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Failed to request password reset')
+    if (response.data.resetToken) {
+      resetToken.value = response.data.resetToken
+      showResetForm.value = true
+      success.value = 'Reset token generated successfully!'
+    } else {
+      throw new Error('No reset token received')
     }
-
-    resetToken.value = data.resetToken
-    showResetForm.value = true
-    success.value = 'Reset token generated successfully!'
   } catch (err) {
-    error.value = err.message
+    error.value = err.response?.data?.message || err.message || 'Failed to request password reset'
   } finally {
     loading.value = false
   }
@@ -189,29 +184,17 @@ async function handlePasswordReset() {
   success.value = null
 
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/v1/auth/reset-password`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        token: token.value,
-        newPassword: newPassword.value
-      })
+    const response = await api.post('/auth/reset-password', {
+      token: token.value,
+      newPassword: newPassword.value
     })
 
-    const data = await response.json()
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Failed to reset password')
-    }
-
-    success.value = 'Password reset successfully! Redirecting to login...'
+    success.value = 'Password reset successful!'
     setTimeout(() => {
       router.push('/login')
     }, 2000)
   } catch (err) {
-    error.value = err.message
+    error.value = err.response?.data?.message || err.message || 'Failed to reset password'
   } finally {
     loading.value = false
   }

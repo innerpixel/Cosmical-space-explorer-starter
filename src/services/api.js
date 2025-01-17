@@ -32,12 +32,9 @@ api.interceptors.response.use(
 export const authAPI = {
   async login(credentials) {
     try {
-      const response = await api.post('/auth', {
-        ...credentials,
-        path: 'login'
-      })
+      const response = await api.post('/auth/login', credentials)
       storageService.setItem(STORAGE_KEYS.AUTH, response.data.token)
-      storageService.setItem(STORAGE_KEYS.USER, response.data.user)
+      storageService.setItem(STORAGE_KEYS.USER, response.data.data.user)
       return response.data
     } catch (error) {
       console.error('Login failed:', error)
@@ -47,12 +44,9 @@ export const authAPI = {
 
   async signup(userData) {
     try {
-      const response = await api.post('/auth', {
-        ...userData,
-        path: 'signup'
-      })
+      const response = await api.post('/auth/signup', userData)
       storageService.setItem(STORAGE_KEYS.AUTH, response.data.token)
-      storageService.setItem(STORAGE_KEYS.USER, response.data.user)
+      storageService.setItem(STORAGE_KEYS.USER, response.data.data.user)
       return response.data
     } catch (error) {
       console.error('Signup failed:', error)
