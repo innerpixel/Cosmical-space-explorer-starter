@@ -1,0 +1,16 @@
+[Unit]
+Description=Cosmical API Server
+After=network.target mongodb.service
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/cosmical.me/api
+ExecStart=/usr/bin/node server/index.js
+Restart=always
+Environment=NODE_ENV=production
+StandardOutput=append:/var/log/cosmical-api.log
+StandardError=append:/var/log/cosmical-api.error.log
+
+[Install]
+WantedBy=multi-user.target
