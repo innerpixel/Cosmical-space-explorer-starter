@@ -1,6 +1,8 @@
+import api from './api'
+
 class AuthService {
   constructor() {
-    this.baseUrl = 'http://localhost:5000/api/v1';
+    this.baseUrl = import.meta.env.VITE_API_URL || '/api/v1';
     this.credentials = 'include';  // Add this to include cookies in requests
   }
 
@@ -19,59 +21,35 @@ class AuthService {
 
   async login(credentials) {
     try {
-      const response = await fetch(`${this.baseUrl}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-        credentials: this.credentials,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Login failed');
-      }
-
-      const data = await response.json();
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.data.user));
-        return data.data.user;
+      const response = await api.post('/auth/login', credentials);
+      const { token, data: { user } } = response.data;
+      
+      if (token) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        return user;
       }
       throw new Error('No token received');
     } catch (error) {
       console.error('Login error:', error);
-      throw error;
+      throw new Error(error.response?.data?.message || error.message || 'Login failed');
     }
   }
 
   async signup(userData) {
     try {
-      const response = await fetch(`${this.baseUrl}/auth/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-        credentials: this.credentials,
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Signup failed');
-      }
-
-      const data = await response.json();
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.data.user));
-        return data.data.user;
+      const response = await api.post('/auth/signup', userData);
+      const { token, data: { user } } = response.data;
+      
+      if (token) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        return user;
       }
       throw new Error('No token received');
     } catch (error) {
       console.error('Signup error:', error);
-      throw error;
+      throw new Error(error.response?.data?.message || error.message || 'Signup failed');
     }
   }
 
