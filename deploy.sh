@@ -6,6 +6,7 @@ SSH_KEY="/home/nsbasicus/.ssh/id_ed25519_cosmical"
 DEPLOY_PATH="/var/www/csmcl.space"
 BACKUP_PATH="${DEPLOY_PATH}/backup"
 DIST_PATH="${DEPLOY_PATH}/dist"
+BUILD_PATH="${DEPLOY_PATH}/build"
 BRANCH="main"
 GITHUB_REPO="origin"
 
@@ -54,23 +55,20 @@ fi
 print_status "Pushing to GitHub..."
 git push $GITHUB_REPO $BRANCH || print_error "Failed to push to GitHub"
 
-# Step 2: Build the project
-print_status "Building the project..."
-npm run build || print_error "Build failed"
-
-# Step 3: Create backup of current deployment
+# Step 2: Create backup of current deployment
 print_status "Creating backup of current deployment..."
 ssh -i "$SSH_KEY" root@$VPS_IP "if [ -d ${DIST_PATH} ]; then tar -czf ${BACKUP_PATH}/backup-\$(date +%Y%m%d-%H%M%S).tar.gz -C ${DEPLOY_PATH} dist; fi"
 
-# Step 4: Deploy to VPS
-print_status "Deploying to VPS..."
-rsync -avz --delete -e "ssh -i $SSH_KEY" dist/ root@$VPS_IP:$DIST_PATH/ || print_error "VPS deployment failed"
+# Step 3: Sync project files to VPS build directory
+print_status "Syncing project files to VPS..."
+ssh -i "$SSH_KEY" root@$VPS_IP "mkdir -p ${BUILD_PATH}"
+rsync -avz --delete --exclude 'node_modules' --exclude 'dist' -e "ssh -i $SSH_KEY" ./ root@$VPS_IP:$BUILD_PATH/ || print_error "Failed to sync project files"
 
-# Step 5: Set permissions
-print_status "Setting permissions..."
-ssh -i "$SSH_KEY" root@$VPS_IP "chown -R www-data:www-data $DIST_PATH && chmod -R 755 $DIST_PATH"
+# Step 4: Build on VPS
+print_status "Building project on VPS..."
+ssh -i "$SSH_KEY" root@$VPS_IP "cd ${BUILD_PATH} && npm install && npm run build && rm -rf ${DIST_PATH} && mv dist ${DEPLOY_PATH}/ && chown -R www-data:www-data ${DIST_PATH} && chmod -R 755 ${DIST_PATH}"
 
-# Step 6: Verify and reload Nginx
+# Step 5: Verify and reload Nginx
 print_status "Verifying Nginx configuration..."
 ssh -i "$SSH_KEY" root@$VPS_IP "nginx -t && systemctl reload nginx"
 
