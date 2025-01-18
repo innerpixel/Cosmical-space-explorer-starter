@@ -1,10 +1,12 @@
 import axios from 'axios'
 import { storageService, STORAGE_KEYS } from './localStorageService'
 
-const API_URL = import.meta.env.VITE_API_URL || '/.netlify/functions'
+const API_URL = import.meta.env.VITE_API_URL || '/api/v1'
+const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT) || 5000
 
 const api = axios.create({
   baseURL: API_URL,
+  timeout: API_TIMEOUT,
   withCredentials: true
 })
 
@@ -15,12 +17,16 @@ api.interceptors.request.use(config => {
     config.headers.Authorization = `Bearer ${token}`
   }
   return config
+}, error => {
+  console.error('API Request Error:', error)
+  return Promise.reject(error)
 })
 
 // Handle token refresh or logout on 401
 api.interceptors.response.use(
   response => response,
   async error => {
+    console.error('API Response Error:', error.response?.data || error.message)
     if (error.response?.status === 401) {
       storageService.clear()
       window.location.href = '/login'

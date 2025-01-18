@@ -117,6 +117,176 @@ npm run preview:prod
 └── scripts/           # Build and utility scripts
 ```
 
+## 🚀 Deployment & Server Configuration
+
+### Server Infrastructure
+
+#### VPS Configuration
+- **Provider**: Hostinger
+- **IP Address**: 147.93.58.192
+- **Operating System**: Linux
+- **Web Server**: Nginx
+- **Node Version**: 16.x or later
+- **Memory**: Recommended 2GB+ RAM
+- **Storage**: 20GB+ SSD
+
+#### Domain Configuration
+- **Primary Site Domain**: csmcl.space (Web3 and blockchain services)
+- **Mail Server Domain**: cosmical.me
+- **DNS Provider**: versio.nl
+- **Required DNS Records**:
+
+##### csmcl.space Records (Main Site & Web3)
+```
+# Site Records
+A     csmcl.space             → 147.93.58.192
+AAAA  csmcl.space             → [IPv6 if available]
+MX    csmcl.space             → mail.cosmical.me (priority 10)
+
+# Mail Authentication
+TXT   csmcl.space             → v=spf1 include:cosmical.me -all
+TXT   _dmarc.csmcl.space      → v=DMARC1; p=reject; rua=mailto:admin@cosmical.me
+TXT   *._domainkey.csmcl.space → v=DKIM1; k=rsa; p=[public-key]
+
+# Web3 Services (if applicable)
+TXT   _web3.csmcl.space       → chain=ethereum;contract=0x...
+```
+
+##### cosmical.me Records (Mail Server)
+```
+# Mail Server Records
+A     cosmical.me             → 147.93.58.192
+A     mail.cosmical.me        → 147.93.58.192
+PTR   147.93.58.192           → mail.cosmical.me
+
+# Mail Authentication
+TXT   cosmical.me             → v=spf1 mx ip4:147.93.58.192 -all
+TXT   _dmarc.cosmical.me      → v=DMARC1; p=reject; rua=mailto:admin@cosmical.me
+TXT   default._domainkey.cosmical.me → v=DKIM1; k=rsa; p=[public-key]
+
+# Mail Services
+MX    cosmical.me             → mail.cosmical.me (priority 10)
+```
+
+### Mail Server Configuration
+
+#### OpenDKIM Setup
+- Location: `/etc/opendkim`
+- Key files: 
+  - Private key: `/etc/opendkim/keys/cosmical.me/default.private`
+  - Public key: `/etc/opendkim/keys/cosmical.me/default.txt`
+- Configuration: `/etc/opendkim.conf`
+
+#### Mail Services
+- SMTP Server: Postfix
+- IMAP/POP3: Dovecot
+- Spam Protection: SpamAssassin
+- Authentication: SASL
+
+### Essential Keys & Access
+
+#### SSH Keys
+1. **Development Key**:
+   ```bash
+   # Generate new key
+   ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_cosmical
+   
+   # Add to SSH agent
+   eval $(ssh-agent -s)
+   ssh-add ~/.ssh/id_ed25519_cosmical
+   ```
+
+2. **GitHub Deployment Key**:
+   - Required for automated deployments
+   - Add public key to GitHub repository settings
+   - Ensure read-only access for security
+
+#### Access Management
+- Root access limited to specific IPs
+- SSH key-based authentication only
+- Regular key rotation schedule
+- Fail2ban for brute force protection
+
+### Deployment Process
+
+#### Prerequisites
+1. SSH key access to VPS
+2. GitHub repository access
+3. Node.js and npm installed
+4. Required environment variables set
+
+#### Deployment Steps
+```bash
+# 1. Clone repository
+git clone git@github.com:innerpixel/Cosmical-space-explorer-starter.git
+
+# 2. Install dependencies
+npm install
+
+# 3. Build project
+npm run build
+
+# 4. Deploy using script
+./deploy.sh
+```
+
+#### Deployment Script Features
+- Automated backup creation
+- Zero-downtime deployment
+- Rollback capability
+- Health checks
+- Nginx configuration validation
+- Service restart handling
+
+### Monitoring & Maintenance
+
+#### Health Checks
+- Server uptime monitoring
+- Mail server status
+- OpenDKIM verification
+- SSL certificate expiry
+- Disk space usage
+
+#### Backup Strategy
+- Daily: Application data
+- Weekly: Full system backup
+- Monthly: Configuration backup
+- Retention: 30 days
+
+#### Security Measures
+- UFW firewall configuration
+- Regular security updates
+- SSL/TLS configuration
+- Rate limiting
+- DDoS protection
+
+### Troubleshooting
+
+#### Common Issues
+1. **Mail Delivery Problems**:
+   ```bash
+   # Check OpenDKIM status
+   systemctl status opendkim
+   
+   # Verify PTR record
+   dig -x 147.93.58.192
+   
+   # Test DKIM signing
+   opendkim-testkey -d cosmical.me -s default -vvv
+   ```
+
+2. **Deployment Failures**:
+   ```bash
+   # Check logs
+   journalctl -u cosmical-api
+   
+   # Verify permissions
+   ls -la /var/www/csmcl.space
+   
+   # Test Nginx config
+   nginx -t
+   ```
+
 ## 👥 User Profiles & Authentication
 
 ### Profile Types
