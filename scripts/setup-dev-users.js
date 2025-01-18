@@ -1,7 +1,16 @@
-const { MongoClient } = require('mongodb');
-const bcrypt = require('bcryptjs');
+import { MongoClient } from 'mongodb';
+import bcrypt from 'bcryptjs';
+import * as dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 
-const MONGODB_URI = 'mongodb://localhost:27017/cosmical_dev';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load development environment variables
+dotenv.config({ path: resolve(__dirname, '../.env.development') });
+
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cosmical_dev';
 
 const devUsers = [
   {
