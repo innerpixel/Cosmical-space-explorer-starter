@@ -1,6 +1,14 @@
-const { MongoClient } = require('mongodb');
-const bcrypt = require('bcryptjs');
-require('dotenv').config({ path: '.env.production' });
+import { MongoClient } from 'mongodb';
+import bcrypt from 'bcryptjs';
+import * as dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Load production environment variables
+dotenv.config({ path: resolve(__dirname, '../.env.production') });
 
 const PROD_MONGODB_URI = process.env.MONGODB_URI;
 
@@ -121,7 +129,7 @@ async function migrateProdUsers() {
       console.log(`\n${user.name}:`);
       console.log(`Email: ${user.email}`);
       console.log(`Type: ${user.profiles[0].type}`);
-      console.log('Password: [Set in .env.production or default secure password]');
+      console.log('Password: [Set in .env.production]');
     });
     
   } catch (error) {
