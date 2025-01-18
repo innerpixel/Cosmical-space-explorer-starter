@@ -36,7 +36,7 @@
       </div>
 
       <!-- Features Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4 md:px-6 lg:px-8 mb-16">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4 md:px-6 lg:px-8 mb-16">
         <div class="bg-space-darker p-6 rounded-lg border border-interface-border shadow-glow">
           <div class="text-interface-text-primary mb-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
