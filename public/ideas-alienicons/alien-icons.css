@@ -1,0 +1,825 @@
+/* Alien UI Icons Collection
+   A set of unique, sci-fi themed icons with glowing and pulsing effects
+   Created for the Cosmical Space Explorer interface
+*/
+
+/* Base Icon Container */
+.alien-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(2, 6, 23, 0.9);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.alien-icon::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  border: 1px solid rgba(6, 182, 212, 0.1);
+  transition: all 0.3s ease;
+}
+
+.alien-icon.online {
+  border-color: rgba(6, 182, 212, 0.6);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+}
+
+/* Status Icon */
+.status {
+  overflow: visible;
+}
+
+.status .inner-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(6, 182, 212, 0.8);
+  transition: all 0.3s ease;
+}
+
+.status .pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(6, 182, 212, 0.4);
+  animation: status-pulse 2s infinite;
+}
+
+@keyframes status-pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 0.2; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* Video Icon */
+.video-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.video-icon .lens {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(6, 182, 212, 0.6);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.video-icon .sensor {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(6, 182, 212, 0.8);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+}
+
+/* Audio Icon */
+.audio-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.audio-icon .wave {
+  width: 3px;
+  height: 12px;
+  background: rgba(6, 182, 212, 0.6);
+  border-radius: 1px;
+  animation: audio-wave 1.5s ease-in-out infinite;
+}
+
+.audio-icon .wave:nth-child(2) {
+  height: 16px;
+  animation-delay: 0.2s;
+}
+
+.audio-icon .wave:nth-child(3) {
+  height: 10px;
+  animation-delay: 0.4s;
+}
+
+@keyframes audio-wave {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.6); }
+}
+
+/* Share/Transmit Icon */
+.transmit-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.transmit-icon .ring {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(6, 182, 212, 0.6);
+  border-radius: 50%;
+  animation: transmit-pulse 2s infinite;
+}
+
+.transmit-icon .pulse {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(6, 182, 212, 0.8);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes transmit-pulse {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 0.2; }
+  100% { transform: scale(0.8); opacity: 0.8; }
+}
+
+/* Active State Modifiers */
+.alien-icon.active {
+  background: rgba(6, 182, 212, 0.15);
+  border-color: rgba(6, 182, 212, 0.6);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+}
+
+.alien-icon.active::before {
+  border-color: rgba(6, 182, 212, 0.3);
+}
+
+/* Hover Effects */
+.alien-icon:hover:not(.disabled) {
+  border-color: rgba(6, 182, 212, 0.5);
+  transform: scale(1.05);
+}
+
+.alien-icon:hover:not(.disabled)::before {
+  border-color: rgba(6, 182, 212, 0.2);
+}
+
+/* Disabled State */
+.alien-icon.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Size Variants */
+.alien-icon.small {
+  width: 24px;
+  height: 24px;
+}
+
+.alien-icon.large {
+  width: 48px;
+  height: 48px;
+}
+
+/* Telepathy/Mind Link Icon */
+.telepathy-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.telepathy-icon .circles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.telepathy-icon .circle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(6, 182, 212, 0.6);
+  border-radius: 50%;
+}
+
+.telepathy-icon .circle:nth-child(1) {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.telepathy-icon .circle:nth-child(2) {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.telepathy-icon .link {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(to bottom,
+    rgba(6, 182, 212, 0) 0%,
+    rgba(6, 182, 212, 0.6) 50%,
+    rgba(6, 182, 212, 0) 100%
+  );
+  left: 50%;
+  transform: translateX(-50%);
+  animation: telepathy-pulse 2s infinite;
+}
+
+@keyframes telepathy-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Energy Core Icon */
+.energy-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.energy-icon .core {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(6, 182, 212, 0.8);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+}
+
+.energy-icon .rings {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: energy-spin 4s linear infinite;
+}
+
+.energy-icon .ring {
+  position: absolute;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  border-radius: 50%;
+}
+
+.energy-icon .ring:nth-child(1) {
+  width: 16px;
+  height: 16px;
+  left: 4px;
+  top: 4px;
+  transform: rotate(45deg);
+}
+
+.energy-icon .ring:nth-child(2) {
+  width: 20px;
+  height: 20px;
+  left: 2px;
+  top: 2px;
+  transform: rotate(-45deg);
+}
+
+@keyframes energy-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Portal/Gateway Icon */
+.portal-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.portal-icon .gateway {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(6, 182, 212, 0.6);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.portal-icon .vortex {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(6, 182, 212, 0) 0%,
+    rgba(6, 182, 212, 0.2) 25%,
+    rgba(6, 182, 212, 0.4) 50%,
+    rgba(6, 182, 212, 0.2) 75%,
+    rgba(6, 182, 212, 0) 100%
+  );
+  animation: portal-spin 3s linear infinite;
+}
+
+@keyframes portal-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Alien Writing Icon */
+.glyph-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.glyph-icon .symbol {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.glyph-icon .line {
+  position: absolute;
+  background: rgba(6, 182, 212, 0.6);
+}
+
+.glyph-icon .line:nth-child(1) {
+  width: 2px;
+  height: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.glyph-icon .line:nth-child(2) {
+  width: 12px;
+  height: 2px;
+  top: 6px;
+  left: 6px;
+}
+
+.glyph-icon .line:nth-child(3) {
+  width: 8px;
+  height: 2px;
+  bottom: 6px;
+  right: 6px;
+}
+
+.glyph-icon .dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(6, 182, 212, 0.8);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 4px rgba(6, 182, 212, 0.4);
+}
+
+/* Bio Scanner Icon */
+.bioscan-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.bioscan-icon .scanner {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: rgba(6, 182, 212, 0.6);
+  top: 50%;
+  transform: translateY(-50%);
+  animation: scan-move 2s ease-in-out infinite;
+}
+
+.bioscan-icon .data {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.bioscan-icon .data-line {
+  position: absolute;
+  height: 1px;
+  background: rgba(6, 182, 212, 0.3);
+  animation: data-pulse 2s infinite;
+}
+
+.bioscan-icon .data-line:nth-child(1) { width: 8px; top: 6px; left: 4px; }
+.bioscan-icon .data-line:nth-child(2) { width: 12px; top: 10px; right: 4px; }
+.bioscan-icon .data-line:nth-child(3) { width: 6px; bottom: 8px; left: 8px; }
+.bioscan-icon .data-line:nth-child(4) { width: 10px; bottom: 4px; right: 6px; }
+
+@keyframes scan-move {
+  0%, 100% { transform: translateY(-50%) scaleY(1); opacity: 0.6; }
+  50% { transform: translateY(-50%) scaleY(2); opacity: 1; }
+}
+
+@keyframes data-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+/* Quantum State Icon */
+.quantum-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.quantum-icon .particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  animation: quantum-spin 4s linear infinite;
+}
+
+.quantum-icon .particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(6, 182, 212, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(6, 182, 212, 0.4);
+}
+
+.quantum-icon .particle:nth-child(1) { top: 0; left: 50%; transform: translateX(-50%); }
+.quantum-icon .particle:nth-child(2) { top: 50%; right: 0; transform: translateY(-50%); }
+.quantum-icon .particle:nth-child(3) { bottom: 0; left: 50%; transform: translateX(-50%); }
+.quantum-icon .particle:nth-child(4) { top: 50%; left: 0; transform: translateY(-50%); }
+
+.quantum-icon .orbit {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes quantum-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Navigation System Icon */
+.nav-system-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.nav-system-icon .compass {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(6, 182, 212, 0.6);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.nav-system-icon .pointer {
+  position: absolute;
+  width: 2px;
+  height: 12px;
+  background: rgba(6, 182, 212, 0.8);
+  left: 50%;
+  top: 50%;
+  transform-origin: bottom center;
+  animation: nav-rotate 4s linear infinite;
+}
+
+@keyframes nav-rotate {
+  from { transform: translate(-50%, -100%) rotate(0deg); }
+  to { transform: translate(-50%, -100%) rotate(360deg); }
+}
+
+/* Life Support Icon */
+.life-support-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.life-support-icon .container {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(6, 182, 212, 0.6);
+  border-radius: 4px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.life-support-icon .pulse {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: rgba(6, 182, 212, 0.6);
+  top: 50%;
+  transform: translateY(-50%);
+  animation: life-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes life-pulse {
+  0%, 100% { transform: translateY(-50%) scaleX(0.3); opacity: 0.3; }
+  50% { transform: translateY(-50%) scaleX(1); opacity: 1; }
+}
+
+/* Ground Control Icon */
+.ground-control-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.ground-control-icon .base {
+  position: absolute;
+  width: 20px;
+  height: 4px;
+  background: rgba(6, 182, 212, 0.6);
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ground-control-icon .tower {
+  position: absolute;
+  width: 2px;
+  height: 16px;
+  background: rgba(6, 182, 212, 0.6);
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ground-control-icon .signal {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 0 12px 0 0;
+  border-top: 2px solid rgba(6, 182, 212, 0.4);
+  border-right: 2px solid rgba(6, 182, 212, 0.4);
+  top: 2px;
+  left: 50%;
+  animation: signal-pulse 2s infinite;
+}
+
+@keyframes signal-pulse {
+  0%, 100% { transform: translateX(-50%) scale(0.8); opacity: 0.4; }
+  50% { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+/* Orbital Control Icon */
+.orbital-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.orbital-icon .planet {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(6, 182, 212, 0.8);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.orbital-icon .orbit {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.orbital-icon .satellite {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(6, 182, 212, 0.6);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform-origin: 10px 0;
+  animation: orbit-rotate 4s linear infinite;
+}
+
+@keyframes orbit-rotate {
+  from { transform: rotate(0deg) translateX(10px); }
+  to { transform: rotate(360deg) translateX(10px); }
+}
+
+/* System Alert Icon */
+.alert-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.alert-icon .hexagon {
+  position: absolute;
+  width: 20px;
+  height: 17.32px;
+  background: transparent;
+  border: 2px solid rgba(6, 182, 212, 0.6);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: alert-pulse 2s infinite;
+}
+
+.alert-icon .dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(6, 182, 212, 0.8);
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes alert-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
+}
+
+/* Power Grid Icon */
+.power-grid-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.power-grid-icon .grid {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.power-grid-icon .node {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(6, 182, 212, 0.6);
+  border-radius: 50%;
+}
+
+.power-grid-icon .node:nth-child(1) { left: 2px; top: 2px; }
+.power-grid-icon .node:nth-child(2) { right: 2px; top: 2px; }
+.power-grid-icon .node:nth-child(3) { left: 2px; bottom: 2px; }
+.power-grid-icon .node:nth-child(4) { right: 2px; bottom: 2px; }
+
+.power-grid-icon .pulse {
+  position: absolute;
+  background: rgba(6, 182, 212, 0.4);
+}
+
+.power-grid-icon .pulse-h {
+  width: 10px;
+  height: 1px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: power-pulse-h 2s infinite;
+}
+
+.power-grid-icon .pulse-v {
+  width: 1px;
+  height: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: power-pulse-v 2s infinite;
+}
+
+@keyframes power-pulse-h {
+  0%, 100% { transform: translate(-50%, -50%) scaleX(0.5); opacity: 0.4; }
+  50% { transform: translate(-50%, -50%) scaleX(1); opacity: 1; }
+}
+
+@keyframes power-pulse-v {
+  0%, 100% { transform: translate(-50%, -50%) scaleY(0.5); opacity: 0.4; }
+  50% { transform: translate(-50%, -50%) scaleY(1); opacity: 1; }
+}
+
+/* Atmosphere Control Icon */
+.atmosphere-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.atmosphere-icon .layers {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.atmosphere-icon .layer {
+  position: absolute;
+  left: 50%;
+  height: 2px;
+  background: rgba(6, 182, 212, 0.4);
+  transform-origin: left center;
+}
+
+.atmosphere-icon .layer:nth-child(1) {
+  width: 16px;
+  top: 4px;
+  transform: translateX(-50%) rotate(-10deg);
+  animation: atmos-wave 3s ease-in-out infinite;
+}
+
+.atmosphere-icon .layer:nth-child(2) {
+  width: 14px;
+  top: 8px;
+  transform: translateX(-50%) rotate(-5deg);
+  animation: atmos-wave 3s ease-in-out infinite 0.2s;
+}
+
+.atmosphere-icon .layer:nth-child(3) {
+  width: 12px;
+  top: 12px;
+  transform: translateX(-50%);
+  animation: atmos-wave 3s ease-in-out infinite 0.4s;
+}
+
+@keyframes atmos-wave {
+  0%, 100% { transform: translateX(-50%) rotate(-10deg); }
+  50% { transform: translateX(-50%) rotate(10deg); }
+}
+
+/* Propulsion System Icon */
+.propulsion-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.propulsion-icon .engine {
+  position: absolute;
+  width: 12px;
+  height: 16px;
+  border: 2px solid rgba(6, 182, 212, 0.6);
+  border-radius: 6px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.propulsion-icon .thrust {
+  position: absolute;
+  width: 2px;
+  height: 8px;
+  background: rgba(6, 182, 212, 0.6);
+  bottom: 0;
+  animation: thrust-pulse 1s infinite;
+}
+
+.propulsion-icon .thrust:nth-child(1) {
+  left: 25%;
+  animation-delay: 0s;
+}
+
+.propulsion-icon .thrust:nth-child(2) {
+  left: 50%;
+  animation-delay: 0.2s;
+}
+
+.propulsion-icon .thrust:nth-child(3) {
+  left: 75%;
+  animation-delay: 0.4s;
+}
+
+@keyframes thrust-pulse {
+  0%, 100% { height: 4px; opacity: 0.4; }
+  50% { height: 8px; opacity: 1; }
+}

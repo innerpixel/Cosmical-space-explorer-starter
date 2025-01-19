@@ -1,52 +1,108 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '../stores/userStore'
 
+import Home from '../views/Home.vue'
+import Documentation from '../views/Documentation.vue'
+import DomainArchitecture from '../views/docs/DomainArchitecture.vue'
+import DevelopmentOverview from '../views/docs/DevelopmentOverview.vue'
+import DevelopmentFlow from '../views/docs/DevelopmentFlow.vue'
+import DeploymentFlow from '../views/docs/DeploymentFlow.vue'
+import SpaceMeetings from '../views/docs/SpaceMeetings.vue'
+import CSMCLSpace from '../views/CSMCLSpace.vue'
+import LoginView from '../views/LoginView.vue'
+import ForgotPasswordView from '../views/ForgotPasswordView.vue'
+import ProfileRequest from '../views/ProfileRequest.vue'
+import AdminDashboard from '../views/AdminDashboard.vue'
+import AdminRequestsView from '../views/AdminRequestsView.vue'
+import AdminNotifications from '../views/AdminNotifications.vue'
+import ComponentShowcase from '../views/showcase/ComponentShowcase.vue'
+import ShowcaseOverview from '../views/showcase/ShowcaseOverview.vue'
+import ShowcaseLayoutDemo from '../views/showcase/ShowcaseLayoutDemo.vue'
+import ShowcaseComponents from '../views/showcase/ShowcaseComponents.vue'
+import ShowcasePatterns from '../views/showcase/ShowcasePatterns.vue'
+import NotFound from '../views/NotFound.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       name: 'Home',
-      component: () => import('../views/Home.vue')
+      component: Home
     },
     {
-      path: '/login',
-      name: 'Login',
-      component: () => import('../views/LoginView.vue')
-    },
-    {
-      path: '/forgot-password',
-      name: 'ForgotPassword',
-      component: () => import('../views/ForgotPasswordView.vue')
+      path: '/features',
+      name: 'Features',
+      component: () => import('../views/Features.vue')
     },
     {
       path: '/docs',
       name: 'Documentation',
-      component: () => import('../views/Documentation.vue')
+      component: Documentation,
+    },
+    {
+      path: '/docs/architecture/domain',
+      name: 'DomainArchitecture',
+      component: DomainArchitecture,
+    },
+    {
+      path: '/docs/development/overview',
+      name: 'DevelopmentOverview',
+      component: DevelopmentOverview,
+    },
+    {
+      path: '/docs/development/flow',
+      name: 'DevelopmentFlow',
+      component: DevelopmentFlow,
+    },
+    {
+      path: '/docs/deployment/flow',
+      name: 'DeploymentFlow',
+      component: DeploymentFlow,
+    },
+    {
+      path: '/docs/features/space-meetings',
+      name: 'SpaceMeetings',
+      component: SpaceMeetings,
+    },
+    {
+      path: '/csmcl',
+      name: 'CSMCL',
+      component: CSMCLSpace
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: LoginView
+    },
+    {
+      path: '/forgot-password',
+      name: 'ForgotPassword',
+      component: ForgotPasswordView
     },
     {
       path: '/profile/request',
       name: 'ProfileRequest',
-      component: () => import('../views/ProfileRequest.vue'),
+      component: ProfileRequest,
       meta: { requiresAuth: true }
     },
     // Admin Routes
     {
       path: '/admin',
       name: 'AdminDashboard',
-      component: () => import('../views/AdminDashboard.vue'),
+      component: AdminDashboard,
       meta: { requiresAuth: true, requiresAdmin: true }
     },
     {
       path: '/admin/mission-control',
       name: 'MissionControl',
-      component: () => import('../views/AdminRequestsView.vue'),
+      component: AdminRequestsView,
       meta: { requiresAuth: true, requiresAdmin: true }
     },
     {
       path: '/admin/notifications',
       name: 'AdminNotifications',
-      component: () => import('../views/AdminNotifications.vue'),
+      component: AdminNotifications,
       meta: { requiresAuth: true, requiresAdmin: true }
     },
     // Redirects for old routes
@@ -61,34 +117,34 @@ const router = createRouter({
     // Showcase routes
     {
       path: '/showcase',
-      component: () => import('../views/showcase/ComponentShowcase.vue'),
+      component: ComponentShowcase,
       children: [
         {
           path: '',
           name: 'ShowcaseOverview',
-          component: () => import('../views/showcase/ShowcaseOverview.vue')
+          component: ShowcaseOverview
         },
         {
           path: 'layout',
           name: 'ShowcaseLayout',
-          component: () => import('../views/showcase/ShowcaseLayoutDemo.vue')
+          component: ShowcaseLayoutDemo
         },
         {
           path: 'components',
           name: 'ShowcaseComponents',
-          component: () => import('../views/showcase/ShowcaseComponents.vue')
+          component: ShowcaseComponents
         },
         {
           path: 'patterns',
           name: 'ShowcasePatterns',
-          component: () => import('../views/showcase/ShowcasePatterns.vue')
+          component: ShowcasePatterns
         }
       ]
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
-      component: () => import('../views/NotFound.vue')
+      component: NotFound
     }
   ]
 })

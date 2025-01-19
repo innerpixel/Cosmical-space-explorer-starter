@@ -2,82 +2,68 @@ import { defineStore } from 'pinia'
 
 export const useInterfaceStore = defineStore('interface', {
   state: () => ({
-    isSystemOnline: true,
-    currentQuantumState: 'STABLE',
-    currentCoordinates: '0.0.0.0',
-    messageQueue: [],
-    chatHistory: [],
+    systemInitialized: false,
     communicationState: {
       connected: false,
       videoEnabled: false,
       audioEnabled: false,
       screenSharing: false,
+      audioEffect: null,
       signalStrength: 0,
       bandwidth: 0
-    }
+    },
+    messages: [], // Array to store messages
+    consoleMode: 'cmd' // 'cmd' or 'chat'
   }),
 
   actions: {
     initializeSystem() {
-      this.isSystemOnline = true
-      this.currentQuantumState = 'STABLE'
-      this.addSystemMessage('System initialized')
-      // Initialize communication in standby mode
-      this.updateCommunicationState({
-        connected: true,
-        signalStrength: 85,
-        bandwidth: 10.5
-      })
-    },
-
-    addSystemMessage(content) {
-      this.messageQueue.push({
-        type: 'system',
-        content,
-        timestamp: Date.now(),
-        displayed: false
-      })
-    },
-
-    sendChatMessage(message) {
-      // Add to message queue for display
-      this.messageQueue.push({
-        ...message,
-        displayed: false
-      })
-
-      // Store in chat history
-      this.chatHistory.push(message)
-
-      // Here you would typically send the message to a backend service
-      // For now, we'll just simulate a response
-      setTimeout(() => {
-        this.messageQueue.push({
-          type: 'chat',
-          isChat: true,
-          username: 'CSMCL',
-          content: 'Message received: ' + message.content,
-          timestamp: Date.now(),
-          displayed: false
-        })
-      }, 1000)
+      this.systemInitialized = true;
+      this.communicationState = {
+        connected: false,
+        videoEnabled: false,
+        audioEnabled: false,
+        screenSharing: false,
+        audioEffect: null,
+        signalStrength: 0,
+        bandwidth: 0
+      };
+      this.messages = [];
     },
 
     updateCommunicationState(newState) {
       this.communicationState = {
         ...this.communicationState,
         ...newState
+      };
+    },
+
+    addMessage(message) {
+      // Ensure message has required fields
+      const formattedMessage = {
+        id: Date.now(),
+        timestamp: new Date(),
+        type: message.type || 'info',
+        content: message.content,
+        ...message
+      };
+
+      this.messages.push(formattedMessage);
+
+      // Keep only last 100 messages
+      if (this.messages.length > 100) {
+        this.messages.shift();
       }
     },
 
-    updateQuantumState(newState) {
-      this.currentQuantumState = newState
-      this.addSystemMessage(`Quantum state updated: ${newState}`)
+    clearMessages() {
+      this.messages = [];
     },
 
-    updateCoordinates(newCoords) {
-      this.currentCoordinates = newCoords
-      this.addSystemMessage(`Position updated: ${newCoords}`)
+    setConsoleMode(mode) {
+      if (['cmd', 'chat'].includes(mode)) {
+        this.consoleMode = mode;
+      }
     }
   }
-})
+});

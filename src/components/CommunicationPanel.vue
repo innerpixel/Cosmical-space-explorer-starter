@@ -31,7 +31,10 @@
       <video ref="videoElement" autoplay playsinline></video>
       <div class="overlay" v-if="!hasActiveStream">
         <div class="scan-line"></div>
-        <span>AWAITING TRANSMISSION</span>
+        <div class="transmission-status">
+          <span class="transmission-text">AWAITING TRANSMISSION</span>
+          <div class="status-indicator"></div>
+        </div>
       </div>
     </div>
 
@@ -170,14 +173,16 @@ onUnmounted(() => {
 
 <style scoped>
 .communication-panel {
-  @apply flex flex-col h-full;
-  @apply bg-opacity-80 backdrop-blur-sm rounded-lg border border-cyan-500/30;
-  background: rgba(2, 4, 10, 0.9);
+  @apply flex flex-col gap-4 p-4 rounded-lg h-full w-full;
+  background: rgba(2, 6, 23, 0.95);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  min-width: 300px;
+  max-width: 600px;
 }
 
 .panel-header {
-  @apply flex items-center justify-between p-4 border-b border-cyan-500/30;
-  height: 56px;
+  @apply flex justify-between items-center p-2;
+  min-height: 60px;
 }
 
 .status-group {
@@ -254,8 +259,10 @@ onUnmounted(() => {
 
 /* Display Area */
 .display-area {
-  @apply flex-1 relative overflow-hidden rounded-lg m-4;
-  @apply bg-gray-900/50 border border-cyan-500/20;
+  @apply relative flex-1 rounded overflow-hidden;
+  background: rgba(2, 6, 23, 0.8);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  min-height: 300px;
 }
 
 video {
@@ -263,42 +270,76 @@ video {
 }
 
 .overlay {
-  @apply absolute inset-0 flex items-center justify-center;
-  @apply text-cyan-500/70 font-mono text-sm;
-  background: rgba(2, 4, 10, 0.7);
+  @apply absolute inset-0 flex flex-col items-center justify-center;
+  background: rgba(2, 6, 23, 0.9);
+  backdrop-filter: blur(4px);
+}
+
+.transmission-status {
+  @apply flex items-center gap-4 p-4 rounded-lg;
+  background: rgba(6, 182, 212, 0.05);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  width: clamp(200px, 80%, 400px);
+}
+
+.transmission-text {
+  @apply text-xl font-mono tracking-wider whitespace-nowrap;
+  font-size: clamp(0.875rem, 2vw, 1.25rem);
+  color: rgba(6, 182, 212, 0.9);
+}
+
+.status-indicator {
+  width: clamp(8px, 1.5vw, 12px);
+  height: clamp(8px, 1.5vw, 12px);
+  border-radius: 50%;
+  background: rgba(6, 182, 212, 0.8);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
+  50% { transform: scale(1.5); opacity: 0.4; box-shadow: 0 0 20px 10px rgba(6, 182, 212, 0); }
+  100% { transform: scale(1); opacity: 0; }
 }
 
 .scan-line {
-  @apply absolute w-full h-0.5 bg-cyan-500/30;
-  animation: scan 2s linear infinite;
+  @apply absolute inset-0;
+  background: linear-gradient(transparent, rgba(6, 182, 212, 0.2), transparent);
+  transform: translateY(-100%);
+  animation: scan 4s linear infinite;
 }
 
 @keyframes scan {
-  0% { top: 0; }
-  100% { top: 100%; }
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
 }
 
 /* Control Panel */
 .control-panel {
-  @apply flex items-center justify-center gap-4 p-4 border-t border-cyan-500/30;
-  height: 56px;
+  @apply grid grid-cols-3 gap-2 p-2;
+  min-height: 80px;
 }
 
 .control-btn {
-  @apply flex flex-col items-center gap-1;
-  @apply transition-all duration-300;
-}
-
-.control-btn .label {
-  @apply text-xs font-mono text-cyan-500/50;
-}
-
-.control-btn:hover .label {
-  @apply text-cyan-500/70;
-}
-
-.control-btn.active .label {
-  @apply text-cyan-500;
+  @apply flex flex-col items-center justify-center gap-2 p-2 rounded transition-all;
+  background: rgba(6, 182, 212, 0.05);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  min-width: 60px;
+  
+  &:hover:not(.disabled) {
+    background: rgba(6, 182, 212, 0.1);
+    border-color: rgba(6, 182, 212, 0.3);
+  }
+  
+  &.active:not(.disabled) {
+    background: rgba(6, 182, 212, 0.15);
+    border-color: rgba(6, 182, 212, 0.4);
+  }
+  
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .alien-icon {

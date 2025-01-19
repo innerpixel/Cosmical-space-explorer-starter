@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sound Generator</title>
+</head>
+<body>
+    <script>
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        async function generateSound(frequency, duration, type = 'sine') {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.type = type;
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Create fade out
+            gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+            
+            // Record the audio
+            const mediaStreamDest = audioContext.createMediaStreamDestination();
+            gainNode.connect(mediaStreamDest);
+            
+            const mediaRecorder = new MediaRecorder(mediaStreamDest.stream);
+            const chunks = [];
+            
+            return new Promise((resolve) => {
+                mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'audio/mp3' });
+                    resolve(blob);
+                };
+                
+                mediaRecorder.start();
+                setTimeout(() => mediaRecorder.stop(), duration * 1000);
+            });
+        }
+        
+        async function downloadSound(name, frequency, duration, type) {
+            const blob = await generateSound(frequency, duration, type);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = name;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        
+        // Generate UI sounds
+        downloadSound('ui-click.mp3', 800, 0.1, 'sine');
+        downloadSound('ui-hover.mp3', 600, 0.1, 'sine');
+        
+        // Generate transition sounds
+        downloadSound('transition-in.mp3', 200, 0.3, 'sawtooth');
+        downloadSound('transition-out.mp3', 150, 0.3, 'sawtooth');
+        
+        // Generate ambient sounds
+        downloadSound('space-ambient.mp3', 50, 2, 'sine');
+        downloadSound('computer-ambient.mp3', 100, 2, 'square');
+    </script>
+</body>
+</html>

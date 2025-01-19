@@ -40,34 +40,31 @@ onMounted(() => {
 }
 
 .canvas-area {
-  @apply absolute inset-2;
+  @apply absolute inset-0;
   background: transparent;
-  border-radius: theme('borderRadius.lg');
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
 }
 
 canvas {
   @apply w-full h-full;
-  border-radius: inherit;
 }
 
 .interface-layer {
-  @apply absolute inset-0 pointer-events-none p-4;
-  z-index: 10;
+  @apply absolute inset-0 pointer-events-none;
 }
 
 .interface-grid {
-  @apply h-full grid grid-cols-12 gap-4;
+  @apply h-full w-full p-4 grid pointer-events-none;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
 }
 
 .console-section {
-  @apply col-span-4 pointer-events-auto flex flex-col;
-  min-height: calc(100vh - 2rem); /* Account for padding */
+  @apply h-full flex items-end pointer-events-auto;
+  grid-column: 1;
 }
 
 .communication-section {
-  @apply col-span-8 pointer-events-auto flex flex-col;
-  min-height: calc(100vh - 2rem); /* Account for padding */
+  @apply h-full flex items-end pointer-events-auto;
+  grid-column: 3;
 }
 </style>
