@@ -7,7 +7,7 @@
       <div class="max-w-md mx-auto space-y-8">
         <!-- Header -->
         <div class="text-center">
-          <img src="../assets/logo.svg" alt="Logo" class="w-24 h-24 mx-auto mb-4 animate-pulse-slow">
+          <img src="/icons/icon-192.svg" alt="Logo" class="w-24 h-24 mx-auto mb-4 animate-pulse-slow">
           <h2 class="text-2xl font-semibold text-interface-text-primary">Reset Your Password</h2>
           <p class="text-interface-text-muted mt-2">Enter your email to receive a reset token</p>
         </div>
