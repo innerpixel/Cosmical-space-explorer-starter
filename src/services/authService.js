@@ -1,15 +1,18 @@
 import api from './api'
+import { storageService, STORAGE_KEYS } from './localStorageService'
 
 class AuthService {
   constructor() {
     this.baseUrl = import.meta.env.VITE_API_URL || '/api/v1';
-    this.credentials = 'include';  // Add this to include cookies in requests
   }
 
   async initialize() {
     try {
       const user = this.loadFromStorage();
-      if (user && this.getToken()) {
+      const token = this.getToken();
+      if (user && token) {
+        // Set the token in axios defaults
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         return true;
       }
       return false;
@@ -25,8 +28,13 @@ class AuthService {
       const { token, data: { user } } = response.data;
       
       if (token) {
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
+        // Store token and user data
+        storageService.setItem(STORAGE_KEYS.AUTH, token);
+        storageService.setItem(STORAGE_KEYS.USER, user);
+        
+        // Set the token in axios defaults
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        
         return user;
       }
       throw new Error('No token received');
@@ -42,8 +50,13 @@ class AuthService {
       const { token, data: { user } } = response.data;
       
       if (token) {
-        localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
+        // Store token and user data
+        storageService.setItem(STORAGE_KEYS.AUTH, token);
+        storageService.setItem(STORAGE_KEYS.USER, user);
+        
+        // Set the token in axios defaults
+        api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        
         return user;
       }
       throw new Error('No token received');
@@ -53,18 +66,28 @@ class AuthService {
     }
   }
 
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  }
-
   getToken() {
-    return localStorage.getItem('token');
+    return storageService.getItem(STORAGE_KEYS.AUTH);
   }
 
   loadFromStorage() {
-    const userStr = localStorage.getItem('user');
-    return userStr ? JSON.parse(userStr) : null;
+    return storageService.getItem(STORAGE_KEYS.USER);
+  }
+
+  async logout() {
+    try {
+      // Clear auth header
+      delete api.defaults.headers.common['Authorization'];
+      
+      // Clear storage
+      storageService.removeItem(STORAGE_KEYS.AUTH);
+      storageService.removeItem(STORAGE_KEYS.USER);
+      
+      return true;
+    } catch (error) {
+      console.error('Logout error:', error);
+      return false;
+    }
   }
 
   isAuthenticated() {

@@ -48,6 +48,9 @@ setup_dev_users() {
 start_dev() {
     print_status "Starting development environment..."
     
+    # Store the root directory
+    ROOT_DIR=$(pwd)
+    
     # Check MongoDB
     check_mongodb
     
@@ -57,9 +60,16 @@ start_dev() {
     # Setup development users
     setup_dev_users
     
-    # Start the development server
-    print_status "Starting development server..."
-    npm run dev
+    # Start the backend server
+    print_status "Starting backend server..."
+    cd "${ROOT_DIR}/server" && npm run start &
+    
+    # Wait for backend to start
+    sleep 3
+    
+    # Start the frontend development server
+    print_status "Starting frontend server..."
+    cd "${ROOT_DIR}" && npm run dev
 }
 
 # Function to reset development database
@@ -79,14 +89,7 @@ case "$1" in
     "reset-db")
         reset_dev_db
         ;;
-    "setup-users")
-        setup_dev_users
-        ;;
     *)
-        echo "Usage: $0 {start|reset-db|setup-users}"
-        echo "  start       - Start development environment"
-        echo "  reset-db    - Reset development database"
-        echo "  setup-users - Setup development users only"
-        exit 1
+        print_error "Invalid command. Usage: $0 {start|reset-db}"
         ;;
 esac

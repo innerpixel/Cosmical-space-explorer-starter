@@ -42,3 +42,6 @@ server/.env.*
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# MongoDB credentials
+scripts/mongodb-credentials.txt
