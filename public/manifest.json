@@ -61,5 +61,28 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/home-screen.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Home Screen - Cosmic Explorer Interface"
+    },
+    {
+      "src": "screenshots/features-screen.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Features - Alien Technology Overview"
+    },
+    {
+      "src": "screenshots/space-screen.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Space Navigation Interface"
+    }
   ]
 }
