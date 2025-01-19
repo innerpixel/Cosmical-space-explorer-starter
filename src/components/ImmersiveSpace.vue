@@ -62,10 +62,12 @@ canvas {
 }
 
 .console-section {
-  @apply col-span-4 pointer-events-auto;
+  @apply col-span-4 pointer-events-auto flex flex-col;
+  min-height: calc(100vh - 2rem); /* Account for padding */
 }
 
 .communication-section {
-  @apply col-span-8 pointer-events-auto;
+  @apply col-span-8 pointer-events-auto flex flex-col;
+  min-height: calc(100vh - 2rem); /* Account for padding */
 }
 </style>
