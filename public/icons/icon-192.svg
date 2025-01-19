@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <circle cx="96" cy="96" r="96" fill="#0A0A0F"/>
+  
+  <!-- Outer Ring -->
+  <circle cx="96" cy="96" r="86" stroke="#4A90E2" stroke-width="2" opacity="0.8"/>
+  
+  <!-- Middle Ring -->
+  <circle cx="96" cy="96" r="70" stroke="#7B61FF" stroke-width="3" opacity="0.9"/>
+  
+  <!-- Inner Crystal -->
+  <g transform="translate(96 96)">
+    <circle r="40" fill="#2A1B6D"/>
+    <path d="M0,-40 L34.64,20 L-34.64,20 Z" fill="#4A3B9D"/>
+    <path d="M0,40 L-34.64,-20 L34.64,-20 Z" fill="#6A5BCD"/>
+    <circle r="20" fill="#8A7BFF"/>
+  </g>
+</svg>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="256" fill="#0A0A0F"/>
+  
+  <!-- Outer Ring with Glow -->
+  <circle cx="256" cy="256" r="230" stroke="#4A90E2" stroke-width="4" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.4;0.8" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Middle Ring -->
+  <circle cx="256" cy="256" r="180" stroke="#7B61FF" stroke-width="6" opacity="0.9">
+    <animate attributeName="r" values="180;190;180" dur="4s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Inner Crystal Structure -->
+  <g transform="translate(256 256)">
+    <!-- Crystal Core -->
+    <circle r="80" fill="#2A1B6D"/>
+    <path d="M0,-80 L69.28,40 L-69.28,40 Z" fill="#4A3B9D"/>
+    <path d="M0,80 L-69.28,-40 L69.28,-40 Z" fill="#6A5BCD"/>
+    
+    <!-- Glowing Elements -->
+    <circle r="40" fill="#8A7BFF">
+      <animate attributeName="r" values="40;45;40" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Energy Particles -->
+    <g>
+      <circle cx="0" cy="-60" r="4" fill="#FFFFFF">
+        <animate attributeName="opacity" values="1;0;1" dur="1.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="52" cy="30" r="4" fill="#FFFFFF">
+        <animate attributeName="opacity" values="1;0;1" dur="1.5s" begin="0.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-52" cy="30" r="4" fill="#FFFFFF">
+        <animate attributeName="opacity" values="1;0;1" dur="1.5s" begin="1s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+  </g>
+</svg>
