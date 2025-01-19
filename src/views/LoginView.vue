@@ -21,7 +21,7 @@
           <div class="bg-space-darker rounded-lg shadow-glow border border-interface-border overflow-hidden">
             <div class="p-8">
               <div class="text-center mb-6">
-                <img src="../assets/logo.svg" alt="Logo" class="w-24 h-24 mx-auto mb-4 animate-pulse-slow">
+                <img src="/icons/icon-192.svg" alt="Logo" class="w-24 h-24 mx-auto mb-4 animate-pulse-slow">
                 <h3 class="text-xl font-semibold text-interface-text-primary">Login to Your Account</h3>
               </div>
 
