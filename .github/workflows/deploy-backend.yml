@@ -1,0 +1,81 @@
+name: Deploy Backend to VPS
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'server/**'
+      - '.github/workflows/deploy-backend.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'server/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: server
+        run: npm ci
+
+      - name: Run tests
+        working-directory: server
+        run: npm test || true
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: cosmical.me
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Pull latest changes
+            cd /var/www/space-explorer
+            git pull origin main
+            
+            # Install dependencies
+            cd server
+            npm ci --production
+            
+            # Restart service
+            systemctl restart space-explorer
+            
+            # Wait for service to start
+            sleep 5
+            
+            # Check service status
+            systemctl is-active --quiet space-explorer || exit 1
+
+      - name: Health check
+        run: |
+          sleep 10
+          curl --fail https://cosmical.me/api/health || exit 1
+
+      - name: Notify on failure
+        if: failure()
+        uses: appleboy/ssh-action@master
+        with:
+          host: cosmical.me
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Revert to previous version
+            cd /var/www/space-explorer
+            git reset --hard HEAD@{1}
+            
+            # Reinstall dependencies
+            cd server
+            npm ci --production
+            
+            # Restart service
+            systemctl restart space-explorer
