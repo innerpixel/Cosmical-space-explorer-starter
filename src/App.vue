@@ -1,19 +1,13 @@
 <template>
-  <div class="min-h-screen flex flex-col">
-    <main class="flex-1">
-      <RouterView />
-    </main>
-    <BottomBar />
-  </div>
+  <RouterView />
 </template>
 
 <script setup>
-import BottomBar from './components/BottomBar.vue'
 </script>
 
 <style>
 body {
-  @apply bg-black min-h-screen;
+  @apply bg-black min-h-screen overflow-hidden;
 }
 
 #app {
